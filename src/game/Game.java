@@ -1,6 +1,7 @@
+package game;
+
 import java.awt.*;
 import java.awt.image.BufferStrategy;
-import java.util.ArrayList;
 
 import javax.swing.*;
 
@@ -47,7 +48,7 @@ public class Game extends Canvas implements Runnable {
             g.fillRect(0,0,frame.getWidth(),frame.getHeight());
 
             //System.out.println("Ship pos = " + ship.transform.position.x + " " + ship.transform.position.y);
-            //System.out.println(Camera.main.resolutionHeight);
+            //System.out.println(game.Camera.main.resolutionHeight);
 
             update();
 
@@ -87,6 +88,6 @@ public class Game extends Canvas implements Runnable {
 
     private void render(Graphics2D g) {
         Renderer.sprites.forEach(sprite -> Renderer.draw(sprite, g));
-        //Renderer.sprites.clear();
+        //game.Renderer.sprites.clear();
     }
 }

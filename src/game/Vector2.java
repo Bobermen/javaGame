@@ -1,3 +1,5 @@
+package game;
+
 // package (packageName)
 public class Vector2
 {

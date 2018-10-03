@@ -1,3 +1,7 @@
+package game;
+
+import Physics2d.Colliders2d.Collider2d;
+
 public class Component {
 
     public GameObject gameObject; //TODO it's not safety

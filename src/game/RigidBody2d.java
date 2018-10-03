@@ -1,3 +1,5 @@
+package game;
+
 public class RigidBody2d extends Component {
 
     public double mass = 1;

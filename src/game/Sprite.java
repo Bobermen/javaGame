@@ -1,5 +1,6 @@
+package game;
+
 import java.awt.*;
-import java.awt.image.BufferedImage;
 
 public class Sprite extends Component {
     public Image image;
@@ -10,7 +11,7 @@ public class Sprite extends Component {
     public Sprite(Image image) {
         this.image = image;
         pivot = new Vector2(image.getWidth(null)/2, image.getHeight(null)/2);
-        //pivot = new Vector2(image.getWidth(null)/2, 0);
+        //pivot = new game.Vector2(image.getWidth(null)/2, 0);
     }
 
     public void start() {

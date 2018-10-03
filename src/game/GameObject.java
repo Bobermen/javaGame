@@ -1,5 +1,8 @@
+package game;
+
+import Physics2d.Colliders2d.Collider2d;
+
 import java.util.ArrayList;
-import java.util.Iterator;
 
 public class GameObject {
 
@@ -16,7 +19,7 @@ public class GameObject {
     public void update() {
         components.forEach(Component::update);
     }
-    public void start() { components.forEach(Component::start()); }
+    public void start() { components.forEach(Component::start); }
     public void onCollisionDetected(Collider2d collider) {}
 
     public static void callUpdate() {

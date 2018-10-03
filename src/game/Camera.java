@@ -1,4 +1,4 @@
-import java.awt.event.MouseWheelEvent;
+package game;
 
 public class Camera extends Component {
 
