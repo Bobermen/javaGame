@@ -13,11 +13,10 @@ public class GameObject {
     }
 
     //TODO clone()
-    //TODO ::
     public void update() {
-        components.forEach(component -> component.update());
+        components.forEach(Component::update);
     }
-    public void start() { components.forEach(component -> component.start()); }
+    public void start() { components.forEach(Component::start()); }
     public void onCollisionDetected(Collider2d collider) {}
 
     public static void callUpdate() {
