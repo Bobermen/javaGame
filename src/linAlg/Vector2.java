@@ -1,4 +1,4 @@
-package game;
+package linAlg;
 
 // package (packageName)
 public class Vector2
@@ -68,9 +68,10 @@ public class Vector2
         return Math.sqrt(x * x + y * y);
     }
 
+    public double sqrMagnitude() { return x * x + y * y; }
+
     public void normalize() {
         double m = this.magnitude();
-        this.idiv(m);
     }
 
     public Vector2 normalized() {
