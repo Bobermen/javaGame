@@ -2,10 +2,6 @@ package linAlg.Vector3;
 
 class UnmodifiebleVector3 extends Vector3
 {
-    public double x;
-    public double y;
-    public double z;
-
     UnmodifiebleVector3(double a, double b, double c)
     {
         x = a;
