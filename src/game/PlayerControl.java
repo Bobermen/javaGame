@@ -1,5 +1,6 @@
 package game;
 
+import linAlg.Vector2.Vector2;
 import java.awt.event.KeyEvent;
 
 public class PlayerControl extends Component {
@@ -41,7 +42,7 @@ public class PlayerControl extends Component {
         if (rigidBody2d != null) {
             Vector2 sideVelocity = rigidBody2d.velocity
                     .sub(rigidBody2d.velocity.mul(rigidBody2d.velocity.dot(gameObject.transform.getRIGHT())));
-            rigidBody2d.addForce(sideVelocity.negative().mul(sideVelocity.magnitude() * angularK));
+            //rigidBody2d.addForce(sideVelocity.negative().mul(sideVelocity.magnitude() * angularK));
             rigidBody2d.addForce(gameObject.transform.getRIGHT().mul(power * speed));
             rigidBody2d.addForce(rigidBody2d.velocity.negative()
                     .mul(rigidBody2d.velocity.magnitude() * dragK));

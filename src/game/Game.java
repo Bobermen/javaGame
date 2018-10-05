@@ -1,5 +1,7 @@
 package game;
 
+import linAlg.Vector2.Vector2;
+
 import java.awt.*;
 import java.awt.image.BufferStrategy;
 
@@ -12,7 +14,7 @@ public class Game extends Canvas implements Runnable {
     private GameObject mainCamera;
     private BufferStrategy strategy;
 
-
+    private static Scene scene;
 
     public Game(JFrame frame) {
         this.frame = frame;
@@ -66,15 +68,19 @@ public class Game extends Canvas implements Runnable {
         }
     }
     private void init() {
+        scene = new Scene();
+
         mainCamera = new GameObject();
         mainCamera.addComponent(new Camera(frame.getWidth(), frame.getHeight()));
+        mainCamera.scene = scene;
         GameObject.instantiate(mainCamera);
-        System.out.println(frame.getWidth());
+        //System.out.println(frame.getWidth());
 
         GameObject ship = new GameObject();
-        ship.transform.position = new Vector2(0, 100);
-        ship.transform.rotation = 0;
-        ship.transform.scale = 0.06;
+        ship.transform.setLocalPosition(Vector2.getVector2(0, 100));
+        System.out.println(ship.transform.getPosition());
+        ship.transform.setLocalRotation(45);
+        ship.transform.setLocalScale(0.06);
         RigidBody2d rigidBody2d = ship.addComponent(new RigidBody2d());
         rigidBody2d.mass = 35000000;
         ship.addComponent(new PlayerControl());
@@ -82,8 +88,12 @@ public class Game extends Canvas implements Runnable {
         GameObject.instantiate(ship);
     }
 
+    public static Scene getActiveScene() {
+        return scene;
+    }
+
     private void update() {
-        GameObject.callUpdate();
+        scene.root.forEach(transform -> transform.gameObject.update());
     }
 
     private void render(Graphics2D g) {

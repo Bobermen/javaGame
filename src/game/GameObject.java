@@ -6,39 +6,59 @@ import java.util.ArrayList;
 
 public class GameObject {
 
-    private static ArrayList<GameObject> gameObjects = new ArrayList<>();
+    //private static ArrayList<GameObject> gameObjects = new ArrayList<>();
     private ArrayList<Component> components = new ArrayList<>();
 
     public Transform transform;
+    public boolean enabled;
+    public Scene scene;
 
     public GameObject() {
-        transform = this.addComponent(new Transform());
+        transform = new Transform();
+        transform.gameObject = this;
     }
 
-    //TODO clone()
+    public GameObject clone() {
+        return null;//TODO
+    }
     public void update() {
         components.forEach(Component::update);
+        for (Transform child : transform) {
+            child.gameObject.update();
+        }
     }
     public void start() { components.forEach(Component::start); }
     public void onCollisionDetected(Collider2d collider) {}
 
-    public static void callUpdate() {
-        gameObjects.forEach(GameObject::update);
-    }
 
-    public static void instantiate(GameObject gameObject, Transform parent) {
-        gameObjects.add(gameObject);
+
+    public static GameObject instantiate(GameObject gameObject, Transform parent) {
+        //GameObject clone = gameObject.clone();
+        //clone.scene = Game.getActiveScene();
+        //clone.transform.setParent(parent);
+        //clone.start();
+        //return clone;
+        gameObject.scene = Game.getActiveScene();
+        gameObject.scene.root.add(gameObject.transform);
         gameObject.transform.setParent(parent);
         gameObject.start();
+        return gameObject;
     }
-    public static void instantiate(GameObject gameObject) {
-        gameObjects.add(gameObject);
+    public static GameObject instantiate(GameObject gameObject) {
+        //GameObject clone = gameObject.clone();
+        //clone.scene = Game.getActiveScene();
+        //clone.scene.root.add(clone.transform);
+        //clone.start();
+        //return clone;
+        gameObject.scene = Game.getActiveScene();
+        gameObject.scene.root.add(gameObject.transform);
         gameObject.start();
+        return gameObject;
     }
 
     public static void destroy(GameObject obj) {
         obj.components.forEach(Component::destroy);
-        gameObjects.remove(obj);
+
     }
 
     public <T extends Component> T addComponent(T component) {
