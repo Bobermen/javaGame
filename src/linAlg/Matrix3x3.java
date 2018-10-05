@@ -1,7 +1,6 @@
 package linAlg;
 
 import linAlg.Vector2.Vector2;
-import linAlg.Vector3.ModifiebleVector3;
 import linAlg.Vector3.Vector3;
 
 public class Matrix3x3 {
@@ -50,7 +49,6 @@ public class Matrix3x3 {
 
     public static Matrix3x3 dot(Matrix3x3 m1, Matrix3x3 m2)
     {
-        //перемножение
         Matrix3x3 matrix = new Matrix3x3();
         // Fisrt Column
         matrix.m[0] = m1.m[0] * m2.m[0] + m1.m[3] * m2.m[1] + m1.m[6] * m2.m[2];
@@ -135,9 +133,6 @@ public class Matrix3x3 {
     }
     public static Matrix3x3 TRS(Vector2 pos, double rotation, double scale)
     {
-        //fout << Matrix4x4::Scale(s);
-        //fout << Matrix4x4::Rotate(q);
-        //fout << Matrix4x4::Translate(pos);
         return Matrix3x3.Translate(pos).dot(Matrix3x3.Rotate(rotation)).dot(Matrix3x3.Scale(scale));
     }
 }
