@@ -76,10 +76,8 @@ public class Matrix3x3 {
 
     public static Vector2 dot(Matrix3x3 m1, Vector2 m2)
     {
-
         Vector3 v = Vector3.getVector3(m2.x, m2.y, 1);
         v = dot(m1, v);
-
         return Vector2.getVector2(v.x/ v.z, v.y/v.z);
     }
 
@@ -113,7 +111,7 @@ public class Matrix3x3 {
         // cos sin 0
         //-sin cos 0
         //  0   0  1
-        rotation = rotation / (720 * Math.PI);
+        rotation = Math.toRadians(rotation);
         Matrix3x3 matrix = new Matrix3x3();
         matrix.m[0] = Math.cos(rotation);
         matrix.m[4] = matrix.m[0];
