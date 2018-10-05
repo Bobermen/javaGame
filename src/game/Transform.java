@@ -94,9 +94,6 @@ public class Transform extends Component implements Iterable<Transform> {
     // TODO clone()
 
     public void update() {
-        System.out.println(RIGHT);
-        RIGHT = transformDirection(Vector2.RIGHT);
-        UP = transformDirection(Vector2.UP);
         if (parent != null) {
             localToWorldMatrix = parent.localToWorldMatrix
                     .dot(Matrix3x3.Translate(localPosition)
@@ -117,6 +114,9 @@ public class Transform extends Component implements Iterable<Transform> {
             rotation = localRotation;
             scale = localScale;
         }
+        RIGHT = transformDirection(Vector2.RIGHT);
+        UP = transformDirection(Vector2.UP);
+        //System.out.println(RIGHT);
         for (Transform child : transform) {
             child.update();
         }

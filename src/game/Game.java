@@ -74,7 +74,6 @@ public class Game extends Canvas implements Runnable {
         mainCamera.addComponent(new Camera(frame.getWidth(), frame.getHeight()));
         mainCamera.scene = scene;
         GameObject.instantiate(mainCamera);
-        //System.out.println(frame.getWidth());
 
         GameObject ship = new GameObject();
         ship.transform.setLocalPosition(Vector2.getVector2(0, 100));
