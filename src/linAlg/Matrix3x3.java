@@ -68,9 +68,9 @@ public class Matrix3x3 {
     {
         //матрица на вектор3
         Vector3 result = Vector3.getVector3();
-        result.x = (m1.m[0] + m1.m[3] + m1.m[6]) * m2.x;
-        result.y = (m1.m[1] + m1.m[4] + m1.m[7]) * m2.x;
-        result.z = (m1.m[2] + m1.m[5] + m1.m[8]) * m2.x;
+        result.x = m1.m[0] * m2.x + m1.m[3] * m2.y + m1.m[6] * m2.z;
+        result.y = m1.m[1] * m2.x + m1.m[4] * m2.y + m1.m[7] * m2.z;
+        result.z = m1.m[2] * m2.x + m1.m[5] * m2.y + m1.m[8] * m2.z;
         return result;
     }
 
@@ -83,7 +83,7 @@ public class Matrix3x3 {
         return Vector2.getVector2(v.x/ v.z, v.y/v.z);
     }
 
-    Matrix3x3 Transpose()
+    public Matrix3x3 Transpose()
     {
         Matrix3x3 matrix = new Matrix3x3();
         matrix.m[0] = m[0];
@@ -98,7 +98,7 @@ public class Matrix3x3 {
         return matrix;
     }
 
-    static Matrix3x3 Translate(Vector2 pos)
+    public static Matrix3x3 Translate(Vector2 pos)
     {
         // 1 0 x
         // 0 1 y
@@ -108,7 +108,7 @@ public class Matrix3x3 {
         matrix.m[7] = pos.y;
         return matrix;
     }
-    static Matrix3x3 Rotate(double rotation)
+    public static Matrix3x3 Rotate(double rotation)
     {
         // cos sin 0
         //-sin cos 0
@@ -121,7 +121,7 @@ public class Matrix3x3 {
         matrix.m[1] = -matrix.m[3];
         return matrix;
     }
-    static Matrix3x3 Scale(double scale)
+    public static Matrix3x3 Scale(double scale)
     {
         // s 0 0
         // 0 s 0
@@ -131,7 +131,7 @@ public class Matrix3x3 {
         matrix.m[4] = scale;
         return matrix;
     }
-    static Matrix3x3 TRS(Vector2 pos, double rotation, double scale)
+    public static Matrix3x3 TRS(Vector2 pos, double rotation, double scale)
     {
         //fout << Matrix4x4::Scale(s);
         //fout << Matrix4x4::Rotate(q);
