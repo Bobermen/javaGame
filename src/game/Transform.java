@@ -101,9 +101,9 @@ public class Transform extends Component implements Iterable<Transform> {
             worldToLocalMatrix = Matrix3x3.Rotate(-localRotation)
                     .dot(Matrix3x3.Translate(localPosition.negative()))
                     .dot(parent.worldToLocalMatrix);
-            position = transformPosition(localPosition);
-            rotation = localRotation + parent.rotation;
-            scale = localScale * parent.scale;
+            position = parent.transformPosition(localPosition);
+            rotation = parent.rotation + localRotation;
+            scale = parent.scale * localScale;
         }
         else {
             localToWorldMatrix = Matrix3x3.Translate(localPosition)

@@ -19,8 +19,8 @@ public class Camera extends Component {
         if (width > 40000) {
             width = 40000;
         }
-        if (width < 500) {
-            width = 500;
+        if (width < 50) {
+            width = 50;
         }
     }
 }
