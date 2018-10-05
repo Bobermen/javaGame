@@ -69,9 +69,9 @@ public class Matrix3x3 {
     public static Vector3 dot(Matrix3x3 m1, Vector3 m2)
     {
         Vector3 result = Vector3.getVector3();
-        result.x = m1.m[0]*m2.x + m1.m[1]*m2.y + m1.m[2]*m2.z;
-        result.y = m1.m[3]*m2.x + m1.m[4]*m2.y + m1.m[5]*m2.z;
-        result.z = m1.m[6]*m2.x + m1.m[7]*m2.y + m1.m[8]*m2.z;
+        result.x = m1.m[1]*m2.x + m1.m[4]*m2.y + m1.m[7]*m2.z;
+        result.y = m1.m[2]*m2.x + m1.m[5]*m2.y + m1.m[8]*m2.z;
+        result.z = m1.m[3]*m2.x + m1.m[6]*m2.y + m1.m[9]*m2.z;
 
         return result;
     }
