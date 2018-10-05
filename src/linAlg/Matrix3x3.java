@@ -1,5 +1,8 @@
 package linAlg;
 
+import linAlg.Vector2.Vector2;
+import linAlg.Vector3.UnmodifiebleVector3;
+
 public class Matrix3x3 {
     private double m[];
     public Matrix3x3()
@@ -27,9 +30,20 @@ public class Matrix3x3 {
         }
         return string.toString();
     }
+
     public Matrix3x3 dot(Matrix3x3 m2)
     {
         return dot(this, m2);
+    }
+
+    public UnmodifiebleVector3 dot(UnmodifiebleVector3 v2)
+    {
+        return dot(this, v2);
+    }
+
+    public Vector2 dot(Vector2 v2)
+    {
+        return dot(this, v2);
     }
 
     public static Matrix3x3 dot(Matrix3x3 m1, Matrix3x3 m2)
@@ -50,13 +64,13 @@ public class Matrix3x3 {
         matrix.m[8] = m1.m[2] * m2.m[6] + m1.m[5] * m2.m[7] + m1.m[8] * m2.m[8];
         return matrix;
     }
-    public static Vector3 dot(Matrix3x3 m1, Vector3 m2)
+    public static UnmodifiebleVector3 dot(Matrix3x3 m1, UnmodifiebleVector3 m2)
     {
         //матрица на вектор3
-        Vector3 result = new Vector3();
-        result.x = m1.m[0] + m1.m[3] + m1.m[6];
-        result.y = m1.m[1] + m1.m[4] + m1.m[7];
-        result.z = m1.m[2] + m1.m[5] + m1.m[8];
+        UnmodifiebleVector3 result = new UnmodifiebleVector3();
+        result.x = (m1.m[0] + m1.m[3] + m1.m[6]) * m2.x;
+        result.y = (m1.m[1] + m1.m[4] + m1.m[7]) * m2.x;
+        result.z = (m1.m[2] + m1.m[5] + m1.m[8]) * m2.x;
         return result;
     }
 
@@ -64,9 +78,9 @@ public class Matrix3x3 {
     {
         //матрица на вектор2, не забудь поделить
 
-        Vector3 v = new Vector3(m2.x, m2.y, 1);
+        UnmodifiebleVector3 v = new UnmodifiebleVector3(m2.x, m2.y, 1);
         v = dot(m1, v);
-        return new Vector2(v.x/ v.z, v.y/v.z);
+        return Vector2.getVector2(v.x/ v.z, v.y/v.z);
     }
 
     Matrix3x3 Transpose()
