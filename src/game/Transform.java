@@ -42,16 +42,24 @@ public class Transform extends Component implements Iterable<Transform> {
         return localScale;
     }
 
+
     public Transform() {
         transform = this;
     }
 
     public void setPosition(Vector2 position) {
-        //TODO
+        setLocalPosition(this.parent.inverseTransformPosition(position));
     }
     public void setRotation(double rotation) {
-        setLocalRotation(localRotation + rotation - this.rotation);
+        setLocalRotation(rotation - this.parent.rotation);
     }
+    public void setPositionAndRotation(Vector2 position, double rotation)
+    {
+        this.localPosition = this.parent.inverseTransformPosition(position);
+        this.localRotation = rotation - this.parent.rotation;
+        update();
+    }
+
     public void setLocalPosition(Vector2 position) {
         this.localPosition = position;
         update();
@@ -86,7 +94,7 @@ public class Transform extends Component implements Iterable<Transform> {
             worldToLocalMatrix = Matrix3x3.Rotate(-localRotation)
                     .dot(Matrix3x3.Translate(localPosition.negative()))
                     .dot(parent.worldToLocalMatrix);
-            position = localToWorldMatrix.dot(localPosition);
+            position = transformPosition(localPosition);
             rotation = localRotation + parent.rotation;
             scale = localScale * parent.scale;
         }
@@ -114,22 +122,19 @@ public class Transform extends Component implements Iterable<Transform> {
         if (this.parent != null) {
             this.parent.children.add(this);
             if (!worldPositionStays) {
-                this.localRotation = this.rotation;
-                this.rotation += this.parent.getRotation();
-
-                this.localPosition = this.position;
-                this.position = localToWorldMatrix.dot(this.localPosition);
-
-                this.scale = this.parent.scale * this.localScale;
+                update();
             }
             else {
-
+                setPositionAndRotation(this.position, this.rotation);
             }
         }
         update();
     }
     //TODO inversePosition inverseVector inverseDirection (from world to local space)
     // From local to world space
+    public Vector2 inverseTransformPosition(Vector2 position) {
+        return worldToLocalMatrix.dot(position);
+    }
     public Vector2 transformPosition(Vector2 position) { // Not affected by scale
         return localToWorldMatrix.dot(position);
     }
