@@ -115,7 +115,7 @@ public class Matrix3x3 {
         Matrix3x3 matrix = new Matrix3x3();
         matrix.m[0] = Math.cos(rotation);
         matrix.m[4] = matrix.m[0];
-        matrix.m[3] = Math.sin(rotation);
+        matrix.m[3] = -Math.sin(rotation);
         matrix.m[1] = -matrix.m[3];
         return matrix;
     }
