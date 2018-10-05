@@ -48,10 +48,20 @@ public class Transform extends Component implements Iterable<Transform> {
     }
 
     public void setPosition(Vector2 position) {
-        setLocalPosition(this.parent.inverseTransformPosition(position));
+        if (parent != null) {
+            setLocalPosition(this.parent.inverseTransformPosition(position));
+        }
+        else {
+            setLocalPosition(position);
+        }
     }
     public void setRotation(double rotation) {
-        setLocalRotation(rotation - this.parent.rotation);
+        if (parent != null) {
+            setLocalRotation(rotation - this.parent.rotation);
+        }
+        else {
+            setLocalRotation(rotation);
+        }
     }
     public void setPositionAndRotation(Vector2 position, double rotation)
     {
@@ -130,7 +140,7 @@ public class Transform extends Component implements Iterable<Transform> {
         }
         update();
     }
-    //TODO inversePosition inverseVector inverseDirection (from world to local space)
+    //TODO inverseVector inverseDirection (from world to local space)
     // From local to world space
     public Vector2 inverseTransformPosition(Vector2 position) {
         return worldToLocalMatrix.dot(position);
