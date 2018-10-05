@@ -1,7 +1,7 @@
 package linAlg;
 
 import linAlg.Vector2.Vector2;
-import linAlg.Vector3.UnmodifiebleVector3;
+import linAlg.Vector3.Vector3;
 
 public class Matrix3x3 {
     private double m[];
@@ -36,7 +36,7 @@ public class Matrix3x3 {
         return dot(this, m2);
     }
 
-    public UnmodifiebleVector3 dot(UnmodifiebleVector3 v2)
+    public Vector3 dot(Vector3 v2)
     {
         return dot(this, v2);
     }
@@ -64,10 +64,10 @@ public class Matrix3x3 {
         matrix.m[8] = m1.m[2] * m2.m[6] + m1.m[5] * m2.m[7] + m1.m[8] * m2.m[8];
         return matrix;
     }
-    public static UnmodifiebleVector3 dot(Matrix3x3 m1, UnmodifiebleVector3 m2)
+    public static Vector3 dot(Matrix3x3 m1, Vector3 m2)
     {
         //матрица на вектор3
-        UnmodifiebleVector3 result = new UnmodifiebleVector3();
+        Vector3 result = Vector3.getVector3();
         result.x = (m1.m[0] + m1.m[3] + m1.m[6]) * m2.x;
         result.y = (m1.m[1] + m1.m[4] + m1.m[7]) * m2.x;
         result.z = (m1.m[2] + m1.m[5] + m1.m[8]) * m2.x;
@@ -78,7 +78,7 @@ public class Matrix3x3 {
     {
         //матрица на вектор2, не забудь поделить
 
-        UnmodifiebleVector3 v = new UnmodifiebleVector3(m2.x, m2.y, 1);
+        Vector3 v = Vector3.getVector3(m2.x, m2.y, 1);
         v = dot(m1, v);
         return Vector2.getVector2(v.x/ v.z, v.y/v.z);
     }
