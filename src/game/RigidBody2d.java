@@ -1,5 +1,7 @@
 package game;
 
+import linAlg.Vector2.Vector2;
+
 public class RigidBody2d extends Component {
 
     public double mass = 1;
@@ -20,9 +22,9 @@ public class RigidBody2d extends Component {
         //System.out.println(worldCenterOfMass = gameObject.transform.transformPosition(centerOfMass));
         //System.out.println(gameObject.transform.position);
         acceleration = resultForce.div(mass);
-        gameObject.transform.position.iadd(velocity.mul(Time.detlaTime)
-                .add(acceleration.mul(Time.detlaTime * Time.detlaTime / 2)));
-        velocity.iadd(acceleration.mul(Time.detlaTime));
+        transform.setPosition(transform.getPosition().add(velocity.mul(Time.detlaTime)
+                .add(acceleration.mul(Time.detlaTime * Time.detlaTime / 2))));
+        velocity = velocity.add(acceleration.mul(Time.detlaTime));
         resultForce = acceleration = Vector2.ZERO;
 
         //System.out.println(velocity.x);
@@ -39,10 +41,10 @@ public class RigidBody2d extends Component {
         //System.out.println(iForce.magnitude());
         //System.out.println(rVector);
 
-        angularAcceleration= Math.signum(rVector.cross(iForce));
+        angularAcceleration = Math.signum(rVector.cross(iForce));
         //System.out.println(angularAcceleration);
-        gameObject.transform.rotation += angularVelocity * Time.detlaTime
-                + angularAcceleration * Time.detlaTime * Time.detlaTime / 2 ;
+        transform.setRotation(transform.getRotation() + angularVelocity * Time.detlaTime
+                + angularAcceleration * Time.detlaTime * Time.detlaTime / 2 );
         angularVelocity += angularAcceleration * Time.detlaTime;
     }
 

@@ -2,7 +2,7 @@ package Physics2d;
 
 import Physics2d.Colliders2d.Collider2d;
 import game.RigidBody2d;
-import game.Vector2;
+import linAlg.Vector2.Vector2;
 
 import java.util.ArrayList;
 
