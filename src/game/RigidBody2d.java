@@ -1,5 +1,6 @@
 package game;
 
+import linAlg.Matrix3x3;
 import linAlg.Vector2.Vector2;
 
 public class RigidBody2d extends Component {
@@ -8,18 +9,18 @@ public class RigidBody2d extends Component {
     public Vector2 centerOfMass = Vector2.ZERO.clone();
     public Vector2 worldCenterOfMass = Vector2.ZERO.clone();
     public Vector2 velocity = Vector2.ZERO.clone();
+    public Vector2 acceleration = Vector2.ZERO.clone();
+    public double angularVelocity = 0;
+    public double angularAcceleration = 0;
 
-    private double angularVelocity = 0;
-    private double angularAcceleration = 0;
     private Vector2 resultForce = Vector2.ZERO.clone();
-    private Vector2 acceleration = Vector2.ZERO.clone();
 
     public RigidBody2d() {
 
     }
     @Override
     public void update() {
-        //System.out.println(worldCenterOfMass = gameObject.transform.transformPosition(centerOfMass));
+        worldCenterOfMass = transform.transformPosition(centerOfMass);
         //System.out.println(gameObject.transform.position);
         acceleration = resultForce.div(mass);
         transform.setPosition(transform.getPosition().add(velocity.mul(Time.detlaTime)
@@ -37,15 +38,17 @@ public class RigidBody2d extends Component {
         Vector2 rForce = rVector.normalized().mul(rVector.normalized().dot(force));
         Vector2 iForce = force.sub(rForce);
         addForce(rForce);
-        //System.out.println( Math.signum(-iForce.x * rVector.y + rVector.x * iForce.y));
-        //System.out.println(iForce.magnitude());
-        //System.out.println(rVector);
 
-        angularAcceleration = Math.signum(rVector.cross(iForce));
-        //System.out.println(angularAcceleration);
+        angularAcceleration = Math.toDegrees(3 * Math.signum(iForce.cross(rVector)) * iForce.magnitude() * rVector.magnitude()
+                / mass / 2 / 10225);
         transform.setRotation(transform.getRotation() + angularVelocity * Time.detlaTime
                 + angularAcceleration * Time.detlaTime * Time.detlaTime / 2 );
         angularVelocity += angularAcceleration * Time.detlaTime;
     }
-
+    public Vector2 getRelativePointVelocity(Vector2 point) {
+        //System.out.println(point);
+        System.out.println("AngularVelocity = " + angularVelocity);
+        //System.out.println(velocity);
+        return velocity.add(Matrix3x3.Rotate(90).dot(point).mul(Math.toRadians(angularVelocity)));
+    }
 }

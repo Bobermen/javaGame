@@ -30,12 +30,5 @@ public class Renderer {
         affine.scale(scale, scale);
 
         g.drawImage(sprite.image, affine, null);
-        //g.setColor(Color.red);
-        //g.drawRect(Camera.main.resolutionWidth/2,
-           //     Camera.main.resolutionHeight/2, 10, 10);
-        //System.out.println(k);
-        //System.out.println("Screen position = " + position.x + "   " + position.y + " Scale = " + scale);
-        //System.out.println("AffineTranslate = " + affine.getTranslateX() + "  " + affine.getTranslateY() );
-        //System.out.println(pivotX);
     }
 }

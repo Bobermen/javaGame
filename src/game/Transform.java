@@ -21,7 +21,7 @@ public class Transform extends Component implements Iterable<Transform> {
     private Transform parent = null;
     private ArrayList<Transform> children = new ArrayList<>();
     private Vector2 RIGHT = Vector2.getVector2(1, 0);
-    private Vector2 UP = Vector2.UP;
+    private Vector2 UP = Vector2.getVector2(0, 1);
 
     public Vector2 getPosition() {
         return position.clone();
