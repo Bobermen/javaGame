@@ -4,9 +4,7 @@ import linAlg.Vector2.Vector2;
 
 import java.awt.*;
 import java.awt.image.BufferStrategy;
-import java.awt.image.ImageObserver;
-import java.awt.image.ImageProducer;
-
+import java.util.ArrayList;
 import javax.swing.*;
 
 public class Game extends Canvas implements Runnable {
@@ -15,8 +13,7 @@ public class Game extends Canvas implements Runnable {
     private boolean gameRunning = true;
     private GameObject mainCamera;
     private BufferStrategy strategy;
-
-    private static Scene scene;
+    public static ArrayList<GameObject> root = new ArrayList<>();
 
     public Game(JFrame frame) {
         this.frame = frame;
@@ -26,6 +23,7 @@ public class Game extends Canvas implements Runnable {
         requestFocus();
         createBufferStrategy(2);
         strategy = getBufferStrategy();
+        setIgnoreRepaint(true);
     }
 
     public void start() {
@@ -35,7 +33,7 @@ public class Game extends Canvas implements Runnable {
     @Override
     public void run() {
 
-        init();
+        firstInstance();
 
         long lastLoopTime = System.nanoTime();
         final int TARGET_FPS = 60;
@@ -51,6 +49,8 @@ public class Game extends Canvas implements Runnable {
             g.setColor(Color.blue);
             g.fillRect(0,0,frame.getWidth(),frame.getHeight());
 
+            if (Time.detlaTime > 0.02)
+            System.out.println(Time.detlaTime);
             //System.out.println("Ship pos = " + ship.transform.position.x + " " + ship.transform.position.y);
             //System.out.println(game.Camera.main.resolutionHeight);
 
@@ -69,25 +69,21 @@ public class Game extends Canvas implements Runnable {
             catch(Exception e) {}
         }
     }
-    public static Scene getActiveScene() {
-        return scene;
-    }
+
+
 
     private void update() {
-        scene.root.forEach(transform -> transform.gameObject.update());
+        for (int i = 0; i < root.size(); i++) {
+            root.get(i).update();
+        }
     }
 
     private void render(Graphics2D g) {
         Renderer.sprites.forEach(sprite -> Renderer.draw(sprite, g));
         //game.Renderer.sprites.clear();
     }
-    private void init() {
-        scene = new Scene();
+    private void firstInstance() {
 
-        mainCamera = new GameObject();
-        mainCamera.addComponent(new Camera(frame.getWidth(), frame.getHeight()));
-        mainCamera.scene = scene;
-        GameObject.instantiate(mainCamera);
 
         GameObject ship = new GameObject();
         ship.transform.setLocalPosition(Vector2.getVector2(0, 0));
@@ -97,7 +93,12 @@ public class Game extends Canvas implements Runnable {
         rigidBody2d.mass = 35000000;
         rigidBody2d.velocity = Vector2.RIGHT.mul(16);
         ship.addComponent(new PlayerControl());
+        ship.addComponent(new ParticleSystem());
         GameObject.instantiate(ship);
+
+        mainCamera = new GameObject();
+        mainCamera.addComponent(new Camera(frame.getWidth(), frame.getHeight()));
+        GameObject.instantiate(mainCamera, ship.transform);
 
         GameObject hull = new GameObject();
         hull.addComponent(new Sprite(new ImageIcon("Resources/Dunkerk_no_CUPs.png").getImage()));
@@ -123,20 +124,20 @@ public class Game extends Canvas implements Runnable {
         bigTurret.addComponent(new Sprite(new ImageIcon("Resources/CUP1.png").getImage())).pivot.x = 133;
         bigTurret.transform.setLocalPosition(Vector2.getVector2(50.6, 0));
         bigTurret.transform.setLocalRotation(60);
-        bigTurret.addComponent(new TurretControl());
+        //bigTurret.addComponent(new TurretControl());
         GameObject.instantiate(bigTurret, ship.transform);
 
         GameObject bigTurret1 = new GameObject();
         bigTurret1.addComponent(new Sprite(new ImageIcon("Resources/CUP1.png").getImage())).pivot.x = 133;
         bigTurret1.transform.setLocalPosition(Vector2.getVector2(23, 0));
         bigTurret1.transform.setLocalRotation(60);
-        bigTurret1.addComponent(new TurretControl());
+        //bigTurret1.addComponent(new TurretControl());
         GameObject.instantiate(bigTurret1, ship.transform);
 
         GameObject top = new GameObject();
-        Sprite sprite = top.addComponent(new Sprite(new ImageIcon("Resources/RUF.png").getImage()));
-        sprite.pivot.x += 13;
-        sprite.pivot.y -= 1;
+        Sprite sprite = top.addComponent(new Sprite(new ImageIcon("Resources/RUF_1.png").getImage()));
+        //sprite.pivot.x += 13;
+        //sprite.pivot.y -= 1;
         GameObject.instantiate(top, ship.transform);
     }
 

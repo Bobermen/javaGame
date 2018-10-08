@@ -11,7 +11,6 @@ public class GameObject {
 
     public Transform transform;
     public boolean enabled;
-    public Scene scene;
 
     public GameObject() {
         transform = new Transform();
@@ -30,16 +29,13 @@ public class GameObject {
     public void start() { components.forEach(Component::start); }
     public void onCollisionDetected(Collider2d collider) {}
 
-
-
     public static GameObject instantiate(GameObject gameObject, Transform parent) {
         //GameObject clone = gameObject.clone();
         //clone.scene = Game.getActiveScene();
         //clone.transform.setParent(parent);
         //clone.start();
         //return clone;
-        gameObject.scene = Game.getActiveScene();
-        gameObject.scene.root.add(gameObject.transform);
+
         gameObject.transform.setParent(parent);
         gameObject.start();
         return gameObject;
@@ -50,15 +46,15 @@ public class GameObject {
         //clone.scene.root.add(clone.transform);
         //clone.start();
         //return clone;
-        gameObject.scene = Game.getActiveScene();
-        gameObject.scene.root.add(gameObject.transform);
+        Game.root.add(gameObject);
         gameObject.start();
         return gameObject;
     }
-
-    public static void destroy(GameObject obj) {
-        obj.components.forEach(Component::destroy);
-
+    public void destroy() {
+        if (transform.getParent() == null) {
+            Game.root.remove(this);
+        }
+        components.forEach(Component::destroy);
     }
 
     public <T extends Component> T addComponent(T component) {

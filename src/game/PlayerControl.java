@@ -52,13 +52,13 @@ public class PlayerControl extends Component {
                     .dot(helmNormal));
             rigidBody2d.addForceAtPosition(helmVelocity.mul(helmVelocity.magnitude() * 10000)
                     , worldHelmPosition);
-            System.out.println("HelmVelocity = " + helmVelocity);
-            System.out.println("RelativePointVelocity = " + rigidBody2d.getRelativePointVelocity(Vector2.getVector2(-100, 0)));
+            //System.out.println("HelmVelocity = " + helmVelocity);
+            //System.out.println("RelativePointVelocity = " + rigidBody2d.getRelativePointVelocity(Vector2.getVector2(-100, 0)));
             rigidBody2d.addForce(transform.getRIGHT().mul(power * speed));
             rigidBody2d.addForce(rigidBody2d.velocity.negative().mul(rigidBody2d.velocity.magnitude() * dragK));
             rigidBody2d.addForce(sideVelocity.negative().mul(sideVelocity.magnitude() * lateralResistance));
 
-            System.out.println("Velocity = " + rigidBody2d.velocity.magnitude());
+            //System.out.println("Velocity = " + rigidBody2d.velocity.magnitude());
         }
     }
 }

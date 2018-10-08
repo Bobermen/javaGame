@@ -7,6 +7,7 @@ import java.awt.*;
 public class Sprite extends Component {
     public Image image;
     public Vector2 pivot;
+    public float alpha = 1;
 
     private Sprite() {}
 

@@ -122,6 +122,12 @@ public class Transform extends Component implements Iterable<Transform> {
         }
     }
 
+    public void destroy() {
+        for (Transform child : transform) {
+            child.gameObject.destroy();
+        }
+    }
+
     public Transform getParent() { return parent; }
 
     public void setParent(Transform parent) {

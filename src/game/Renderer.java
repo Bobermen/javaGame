@@ -29,6 +29,9 @@ public class Renderer {
         affine.rotate(-Math.toRadians(angle), pivotX, pivotY);
         affine.scale(scale, scale);
 
+        //System.out.println("Starting drawing");
+        g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, sprite.alpha));
         g.drawImage(sprite.image, affine, null);
+        //System.out.println("Drawing successful");
     }
 }

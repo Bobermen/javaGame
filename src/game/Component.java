@@ -13,8 +13,13 @@ public class Component {
     public void update() {
 
     }
-    public void destroy() {
+    public void destroy() {}
 
+    public static void instantiate(GameObject obj) {
+        GameObject.instantiate(obj);
+    }
+    public static void instantiate(GameObject obj, Transform parent) {
+        GameObject.instantiate(obj, parent);
     }
     public void onCollisionDetected(Collider2d collider) {
 
