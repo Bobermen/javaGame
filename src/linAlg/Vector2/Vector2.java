@@ -23,6 +23,8 @@ public abstract class Vector2
     public abstract Vector2 negative();
     public abstract Vector2 clone();
     public abstract boolean isModifieble();
+    public abstract Vector2 rightPerp();
+    public abstract Vector2 leftPerp();
     public double dot(final Vector2 b) {
         return x * b.x + y * b.y;
     }

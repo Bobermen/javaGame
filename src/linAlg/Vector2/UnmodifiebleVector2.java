@@ -12,6 +12,12 @@ class UnmodifiebleVector2 extends Vector2
     public boolean isModifieble() { return false; }
 
     @Override
+    public Vector2 rightPerp() { return new ModifiebleVector2(y, -x); }
+
+    @Override
+    public Vector2 leftPerp() { return new ModifiebleVector2(-y, x); }
+
+    @Override
     public Vector2 add(Vector2 b) {
         return new ModifiebleVector2(x + b.x, y + b.y);
     }
