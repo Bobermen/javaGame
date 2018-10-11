@@ -22,6 +22,14 @@ public abstract class Vector3
         return x * b.x + y * b.y + z * b.z;
     }
 
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof Vector3)
+            return ((((Vector3)obj).x == x) && (((Vector3) obj).y == y) && (((Vector3) obj).z == z));
+        return false;
+    }
+
     public double cross2(Vector3 b) {
         return x * b.y - y * b.x;
     }

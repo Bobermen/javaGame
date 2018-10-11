@@ -29,6 +29,13 @@ public abstract class Vector2
         return x * b.x + y * b.y;
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof Vector2)
+            return ((((Vector2)obj).x == x) && (((Vector2) obj).y == y));
+        return false;
+    }
+
     public double cross(Vector2 b) {
         return x * b.y - y * b.x;
     }
