@@ -49,8 +49,7 @@ public class Game extends Canvas implements Runnable {
             g.setColor(Color.blue);
             g.fillRect(0,0,frame.getWidth(),frame.getHeight());
 
-            if (Time.detlaTime > 0.02)
-            System.out.println(Time.detlaTime);
+
             //System.out.println("Ship pos = " + ship.transform.position.x + " " + ship.transform.position.y);
             //System.out.println(game.Camera.main.resolutionHeight);
 
@@ -124,14 +123,14 @@ public class Game extends Canvas implements Runnable {
         bigTurret.addComponent(new Sprite(new ImageIcon("Resources/CUP1.png").getImage())).pivot.x = 133;
         bigTurret.transform.setLocalPosition(Vector2.getVector2(50.6, 0));
         bigTurret.transform.setLocalRotation(60);
-        //bigTurret.addComponent(new TurretControl());
+        bigTurret.addComponent(new TurretControl());
         GameObject.instantiate(bigTurret, ship.transform);
 
         GameObject bigTurret1 = new GameObject();
         bigTurret1.addComponent(new Sprite(new ImageIcon("Resources/CUP1.png").getImage())).pivot.x = 133;
         bigTurret1.transform.setLocalPosition(Vector2.getVector2(23, 0));
         bigTurret1.transform.setLocalRotation(60);
-        //bigTurret1.addComponent(new TurretControl());
+        bigTurret1.addComponent(new TurretControl());
         GameObject.instantiate(bigTurret1, ship.transform);
 
         GameObject top = new GameObject();

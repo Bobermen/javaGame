@@ -16,9 +16,10 @@ public class Particle extends Component {
     @Override
     public void start() {
         Random r = new Random();
-        rot = r.nextDouble() * 20 - 10;
+        rot = r.nextDouble() * 60 - 30;
         vel = Vector2.getVector2(r.nextDouble()*2 - 1, r.nextDouble()*2 - 1);
         sprite = getComponent(Sprite.class);
+        transform.setLocalRotation(r.nextDouble()*360);
     }
 
     @Override

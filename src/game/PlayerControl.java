@@ -33,9 +33,11 @@ public class PlayerControl extends Component {
     private void getKeys() {
         if (Input.isKey(KeyEvent.VK_W) && speed < 5) {
             speed ++;
+            //System.out.println(speed);
         }
         if (Input.isKey(KeyEvent.VK_S) && speed > -3) {
             speed --;
+            //System.out.println(speed);
         }
         if (Input.isKey(KeyEvent.VK_A) && helm > -2) {
             helm --;

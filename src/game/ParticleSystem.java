@@ -4,7 +4,7 @@ import javax.swing.*;
 
 public class ParticleSystem extends Component {
 
-    public double lifeTime = 30;
+    public double lifeTime = 10;
     public double time;
     public double delay = 0.2;
     @Override
