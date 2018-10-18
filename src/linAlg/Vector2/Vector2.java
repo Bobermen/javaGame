@@ -23,8 +23,17 @@ public abstract class Vector2
     public abstract Vector2 negative();
     public abstract Vector2 clone();
     public abstract boolean isModifieble();
+    public abstract Vector2 rightPerp();
+    public abstract Vector2 leftPerp();
     public double dot(final Vector2 b) {
         return x * b.x + y * b.y;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof Vector2)
+            return ((((Vector2)obj).x == x) && (((Vector2) obj).y == y));
+        return false;
     }
 
     public double cross(Vector2 b) {
