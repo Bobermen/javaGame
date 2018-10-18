@@ -31,18 +31,18 @@ public class PlayerControl extends Component {
         helmPosition = transform.getRIGHT().negative().mul(100);
     }
     private void getKeys() {
-        if (Input.isKey(KeyEvent.VK_W) && speed < 5) {
+        if (Input.isKeyPressed(KeyEvent.VK_W) && speed < 5) {
             speed ++;
-            //System.out.println(speed);
+            System.out.println(speed);
         }
-        if (Input.isKey(KeyEvent.VK_S) && speed > -3) {
+        if (Input.isKeyPressed(KeyEvent.VK_S) && speed > -3) {
             speed --;
-            //System.out.println(speed);
+            System.out.println(speed);
         }
-        if (Input.isKey(KeyEvent.VK_A) && helm > -2) {
+        if (Input.isKeyPressed(KeyEvent.VK_A) && helm > -2) {
             helm --;
         }
-        if (Input.isKey(KeyEvent.VK_D) && helm < 2) {
+        if (Input.isKeyPressed(KeyEvent.VK_D) && helm < 2) {
             helm ++;
         }
     }
