@@ -151,6 +151,7 @@ public class Transform extends Component implements Iterable<Transform> {
     public Vector2 inverseTransformPosition(Vector2 position) {
         return worldToLocalMatrix.dot(position);
     }
+    public Vector2 inverseTransformDirection(Vector2 direction) {return Matrix3x3.Rotate(-rotation).dot(direction);}
     public Vector2 transformPosition(Vector2 position) { // Not affected by scale
         return localToWorldMatrix.dot(position);
     }
