@@ -49,6 +49,7 @@ public class RigidBody2d extends Component {
         //System.out.println(point);
         //System.out.println("AngularVelocity = " + angularVelocity);
         //System.out.println(velocity);
-        return velocity.add(Matrix3x3.Rotate(90).dot(point).mul(Math.toRadians(angularVelocity)));
+        return velocity.add(transform.transformDirection(
+                Matrix3x3.Rotate(90).dot(point).mul(Math.toRadians(angularVelocity))));
     }
 }
