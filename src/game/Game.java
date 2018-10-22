@@ -90,7 +90,7 @@ public class Game extends Canvas implements Runnable {
         ship.transform.setLocalRotation(0);
         ship.transform.setLocalScale(0.06);
         RigidBody2d rigidBody2d = ship.addComponent(new RigidBody2d());
-        rigidBody2d.mass = 35000000;
+        rigidBody2d.mass = 26000000;
         rigidBody2d.velocity = Vector2.RIGHT.mul(16);
         ship.addComponent(new PlayerControl());
         ship.addComponent(new ParticleSystem());
@@ -98,7 +98,7 @@ public class Game extends Canvas implements Runnable {
 
         mainCamera = new GameObject();
         mainCamera.addComponent(new Camera(frame.getWidth(), frame.getHeight()));
-        GameObject.instantiate(mainCamera, ship.transform);
+        GameObject.instantiate(mainCamera);
 
         GameObject hull = new GameObject();
         hull.addComponent(new Sprite(new ImageIcon("Resources/Dunkerk_no_CUPs.png").getImage()));
