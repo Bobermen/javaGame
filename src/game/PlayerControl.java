@@ -9,9 +9,10 @@ public class PlayerControl extends Component {
     public double power = 1020000;
     public double maxVelocity = 16;
     public double radius = 720;
+    public double turnaroundTime = 180;
 
     private double dragK;
-    private double angularK = 20000;
+    private double maxAngularVelocity;
     private double lateralResistance = 9340000;
     private RigidBody2d rigidBody2d;
     private int speed = 0; // from -3 to 5
@@ -21,46 +22,58 @@ public class PlayerControl extends Component {
 
     public void start() {
         dragK = power*5/maxVelocity/maxVelocity;
+        maxAngularVelocity = 360 / turnaroundTime;
         rigidBody2d = gameObject.getComponent(RigidBody2d.class);
-        worldHelmPosition = transform.transformPosition(helmPosition);
     }
 
     public void update() {
+        worldHelmPosition = transform.transformPosition(helmPosition);
         getKeys();
         applyForces();
-        helmPosition = transform.getRIGHT().negative().mul(100);
     }
     private void getKeys() {
-        if (Input.isKeyPressed(KeyEvent.VK_W) && speed < 5) {
+        if (Input.isKeyReleased(KeyEvent.VK_W) && speed < 5) {
             speed ++;
-            System.out.println(speed);
+            System.out.println("Speed = " + speed);
         }
-        if (Input.isKeyPressed(KeyEvent.VK_S) && speed > -3) {
+        if (Input.isKeyReleased(KeyEvent.VK_S) && speed > -3) {
             speed --;
-            System.out.println(speed);
+            System.out.println("Speed = " + speed);
         }
-        if (Input.isKeyPressed(KeyEvent.VK_A) && helm > -2) {
+        if (Input.isKeyReleased(KeyEvent.VK_A) && helm > -2) {
             helm --;
+            System.out.println("Helm = " + helm);
         }
-        if (Input.isKeyPressed(KeyEvent.VK_D) && helm < 2) {
+        if (Input.isKeyReleased(KeyEvent.VK_D) && helm < 2) {
             helm ++;
+            System.out.println("Helm = " + helm);
         }
     }
     private void applyForces() {
         if (rigidBody2d != null) {
             Vector2 sideVelocity = transform.getUP().mul(rigidBody2d.velocity.dot(transform.getUP()));
-            Vector2 helmNormal = Matrix3x3.Rotate(helm * 15).dot(transform.getUP().negative());
+            Vector2 helmNormal = Matrix3x3.Rotate(helm * 15).dot(transform.getUP());
             Vector2 helmVelocity = helmNormal.mul(rigidBody2d.getRelativePointVelocity(helmPosition).negative()
                     .dot(helmNormal));
-            rigidBody2d.addForceAtPosition(helmVelocity.mul(helmVelocity.magnitude() * 10000)
-                    , worldHelmPosition);
+            Vector2 pForce = helmVelocity.mul(helmVelocity.magnitude() * 100000);
+            double angularK = pForce.dot(transform.getUP()) / maxAngularVelocity / maxAngularVelocity;
+            pForce = pForce.sub(transform.getUP()
+                    .mul(angularK * rigidBody2d.angularVelocity * rigidBody2d.angularVelocity));
+            System.out.println("pForce = " + transform.inverseTransformDirection(pForce));
+            //System.out.println("RelativeVelocity = " + transform.inverseTransformDirection(rigidBody2d.getRelativePointVelocity(helmPosition)));
+            rigidBody2d.addForceAtPosition(pForce, worldHelmPosition);
             //System.out.println("HelmVelocity = " + helmVelocity);
             //System.out.println("RelativePointVelocity = " + rigidBody2d.getRelativePointVelocity(Vector2.getVector2(-100, 0)));
             rigidBody2d.addForce(transform.getRIGHT().mul(power * speed));
             rigidBody2d.addForce(rigidBody2d.velocity.negative().mul(rigidBody2d.velocity.magnitude() * dragK));
             rigidBody2d.addForce(sideVelocity.negative().mul(sideVelocity.magnitude() * lateralResistance));
 
+            //System.out.println("1) " + transform.getPosition());
+            //System.out.println(worldHelmPosition);
+            //System.out.println(transform.inverseTransformPosition(worldHelmPosition));
             //System.out.println("Velocity = " + rigidBody2d.velocity.magnitude());
+            //System.out.println("AngularVelocity = "  + rigidBody2d.angularVelocity);
+            //System.out.println("AngularAcceleration = " + rigidBody2d.angularAcceleration);
         }
     }
 }

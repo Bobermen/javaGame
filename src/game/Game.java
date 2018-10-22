@@ -14,6 +14,7 @@ public class Game extends Canvas implements Runnable {
     private GameObject mainCamera;
     private BufferStrategy strategy;
     public static ArrayList<GameObject> root = new ArrayList<>();
+    private Color background = new Color(0, 87, 133, 255);
 
     public Game(JFrame frame) {
         this.frame = frame;
@@ -46,7 +47,7 @@ public class Game extends Canvas implements Runnable {
             Time.detlaTime = (double)updateLength / 1000000000;
             Graphics2D g = (Graphics2D) strategy.getDrawGraphics();
             g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-            g.setColor(Color.blue);
+            g.setColor(background);
             g.fillRect(0,0,frame.getWidth(),frame.getHeight());
 
 

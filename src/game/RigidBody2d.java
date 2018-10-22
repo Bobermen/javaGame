@@ -13,7 +13,9 @@ public class RigidBody2d extends Component {
     public double angularVelocity = 0;
     public double angularAcceleration = 0;
 
-    private Vector2 resultForce = Vector2.ZERO.clone();
+    private double previousY = Double.POSITIVE_INFINITY;
+
+    //private Vector2 resultForce = Vector2.ZERO.clone();
 
     public RigidBody2d() {
 
@@ -21,17 +23,20 @@ public class RigidBody2d extends Component {
     @Override
     public void update() {
         worldCenterOfMass = transform.transformPosition(centerOfMass);
-        //System.out.println(gameObject.transform.position);
-        acceleration = resultForce.div(mass);
+        //translate
         transform.setPosition(transform.getPosition().add(velocity.mul(Time.detlaTime)
                 .add(acceleration.mul(Time.detlaTime * Time.detlaTime / 2))));
         velocity = velocity.add(acceleration.mul(Time.detlaTime));
-        resultForce = acceleration = Vector2.ZERO;
-
-        //System.out.println(velocity.x);
+        //rotate
+        transform.setRotation(transform.getRotation() + angularVelocity * Time.detlaTime
+                + angularAcceleration * Time.detlaTime * Time.detlaTime / 2 );
+        angularVelocity += angularAcceleration * Time.detlaTime;
+        //update
+        acceleration = Vector2.ZERO;
+        angularAcceleration = 0;
     }
     public void addForce(Vector2 force) {
-        resultForce = resultForce.add(force);
+        acceleration = acceleration.add(force.div(mass));
     }
     public void addForceAtPosition(Vector2 force, Vector2 position) {
         Vector2 rVector = worldCenterOfMass.sub(position);
@@ -39,11 +44,24 @@ public class RigidBody2d extends Component {
         Vector2 iForce = force.sub(rForce);
         addForce(rForce);
 
-        angularAcceleration = Math.toDegrees(3 * Math.signum(iForce.cross(rVector)) * iForce.magnitude() * rVector.magnitude()
+        //System.out.println("AngularAcceleration = " + angularAcceleration);
+        angularAcceleration += Math.toDegrees(3 * Math.signum(iForce.cross(rVector)) * iForce.magnitude() * rVector.magnitude()
                 / mass / 2 / 10225);
-        transform.setRotation(transform.getRotation() + angularVelocity * Time.detlaTime
-                + angularAcceleration * Time.detlaTime * Time.detlaTime / 2 );
-        angularVelocity += angularAcceleration * Time.detlaTime;
+
+        if (previousY > transform.transformDirection(force).y) {
+            previousY = transform.transformDirection(force).y;
+        }
+        else {
+            //System.out.println("worldCenter = " + worldCenterOfMass);
+            //System.out.println("rVector = " + rVector);
+            //System.out.println("rVectorMag = " + rVector.magnitude());
+            //System.out.println("rForce = " + rForce);
+            //System.out.println("rForceMag = " + rForce.magnitude());
+            //System.out.println("iForce = " + iForce);
+            //System.out.println("iForceMag = " + iForce.magnitude());
+            //System.out.println("AngularVelocity = " + angularVelocity);
+            //System.out.println("AngularAcceleration = " + angularAcceleration);
+        }
     }
     public Vector2 getRelativePointVelocity(Vector2 point) {
         //System.out.println(point);

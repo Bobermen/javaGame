@@ -128,7 +128,6 @@ public class Input implements KeyListener, MouseListener,
 
     @Override
     public void keyPressed(KeyEvent e) {
-
         keys[e.getKeyCode()] = true;
 
         if(e.getKeyCode() == KeyEvent.VK_SHIFT) isShiftPressed = true;

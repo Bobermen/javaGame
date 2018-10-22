@@ -12,10 +12,10 @@ public class Camera extends Component {
         main = this;
     }
 
-    // TODO lerp, posChange, screenToWorld, worldToScreen
+    // TODO posChange, screenToWorld, worldToScreen
     public void update() {
         height = width/resolutionWidth * resolutionHeight;
-        width += Input.getScroll() * 200;
+        width += Input.getScroll() * 100;
         if (width > 40000) {
             width = 40000;
         }
