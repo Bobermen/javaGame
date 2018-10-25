@@ -1,9 +1,12 @@
 package Physics2d.Colliders2d.Square;
 
+import game.Component;
 import game.RigidBody2d;
 
 public class StaticSquare extends Square
 {
+
+
     @Override
     public boolean isStatic() {
         return true;

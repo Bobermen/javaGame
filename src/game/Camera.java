@@ -45,4 +45,9 @@ public class Camera extends Component {
                     .add(Vector2.getVector2(-100*Time.detlaTime, 0)));
         }
     }
+
+    @Override
+    public Component clone() {
+        return null;
+    }
 }

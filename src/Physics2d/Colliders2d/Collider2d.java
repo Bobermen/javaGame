@@ -13,6 +13,11 @@ public abstract class Collider2d extends Component
     protected Vector2 center;
 
     @Override
+    public Component clone() {
+        return null;
+    }
+
+    @Override
     public void start() {
         Physics2d.colliders.get(layer).add(this);
         // attachedRigidBody = getComponentInParent(attachedRigidBody.getClass());
