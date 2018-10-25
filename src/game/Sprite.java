@@ -22,7 +22,6 @@ public class Sprite extends Component {
     }
 
     public void update() {
-
     }
 
     public void destroy() {

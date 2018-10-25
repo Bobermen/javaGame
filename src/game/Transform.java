@@ -90,8 +90,14 @@ public class Transform extends Component implements Iterable<Transform> {
         return right.clone();
     }
 
-    // TODO clone()
+    @Override
+    public void start() {
+        for (Transform child : this) {
+            child.gameObject.start();
+        }
+    }
 
+    @Override
     public void update() {
         if (parent != null) {
             localToWorldMatrix = parent.localToWorldMatrix

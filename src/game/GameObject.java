@@ -23,30 +23,13 @@ public class GameObject {
             child.gameObject.update();
         }
     }
-    public void start() { components.forEach(Component::start); }
+    public void start() {
+        transform.start();
+        components.forEach(Component::start);
+    }
     public void onCollisionDetected(Collider2d collider) {}
 
-    public static GameObject instantiate(GameObject gameObject, Transform parent) {
-        //GameObject clone = gameObject.clone();
-        //clone.scene = Game.getActiveScene();
-        //clone.transform.setParent(parent);
-        //clone.start();
-        //return clone;
 
-        gameObject.transform.setParent(parent);
-        gameObject.start();
-        return gameObject;
-    }
-    public static GameObject instantiate(GameObject gameObject) {
-        //GameObject clone = gameObject.clone();
-        //clone.scene = Game.getActiveScene();
-        //clone.scene.root.add(clone.transform);
-        //clone.start();
-        //return clone;
-        Game.root.add(gameObject);
-        gameObject.start();
-        return gameObject;
-    }
     public void destroy() {
         if (transform.getParent() == null) {
             Game.root.remove(this);
@@ -97,6 +80,7 @@ public class GameObject {
         GameObject res = new GameObject();
         res.enabled = enabled;
         res.transform = (Transform)transform.clone();
+        res.transform.gameObject = res;
         for (int i = 0; i < components.size(); i++) {
             Component t = components.get(i).clone();
             t.gameObject = res;

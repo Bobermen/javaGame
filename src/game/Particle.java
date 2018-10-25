@@ -38,6 +38,12 @@ public class Particle extends Component {
     }
 
     public Component clone() {
-        return new Particle();
+        Particle res = new Particle();
+        res.time = time;
+        res.lifeTime = lifeTime;
+        res.rot = rot;
+        //res.vel = vel.clone();
+        res.sprite = sprite;
+        return res;
     }
 }

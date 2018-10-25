@@ -11,7 +11,6 @@ public class Renderer {
     public static ArrayList<Sprite> sprites = new ArrayList();
 
     public static void draw (Sprite sprite, Graphics2D g) {
-
         Vector2 position = sprite.transform.getPosition();
         double angle = sprite.transform.getRotation();
         double scale = sprite.transform.getScale();

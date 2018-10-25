@@ -59,7 +59,7 @@ public class PlayerControl extends Component {
             double angularK = pForce.dot(transform.getUp()) / maxAngularVelocity / maxAngularVelocity;
             pForce = pForce.sub(transform.getUp()
                     .mul(angularK * rigidBody2d.angularVelocity * rigidBody2d.angularVelocity));
-            System.out.println("pForce = " + transform.inverseTransformDirection(pForce));
+            //System.out.println("pForce = " + transform.inverseTransformDirection(pForce));
             //System.out.println("RelativeVelocity = " + transform.inverseTransformDirection(rigidBody2d.getRelativePointVelocity(helmPosition)));
             rigidBody2d.addForceAtPosition(pForce, worldHelmPosition);
             //System.out.println("HelmVelocity = " + helmVelocity);

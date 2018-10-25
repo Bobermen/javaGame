@@ -48,6 +48,6 @@ public class Camera extends Component {
 
     @Override
     public Component clone() {
-        return null;
+        return this;
     }
 }
