@@ -1,4 +1,5 @@
 import game.PlayerControl;
+import linAlg.Vector2.Vector2;
 
 import java.io.*;
 import java.net.ServerSocket;
@@ -12,18 +13,24 @@ import java.util.ArrayList;
 
 public class Server
 {
-    private static Server ourInstance = new Server();
-    private ArrayList<Socket> clients = new ArrayList<>();
+    private static Server ourInstance = null;
+    public ArrayList<Socket> clients = new ArrayList<>();
     // DataStream могут быть заменены на что-то более удобное при необходимости
     // Хотя он невероятно удобен
-    private ArrayList<DataInputStream> clientsInput = new ArrayList<>();
-    private ArrayList<DataOutputStream> clientsOutput = new ArrayList<>();
-    private ArrayList<PlayerControl> clientsControl = new ArrayList<>();
+    public ArrayList<DataInputStream> clientsInput = new ArrayList<>();
+    public ArrayList<DataOutputStream> clientsOutput = new ArrayList<>();
+    public ArrayList<PlayerControl> clientsControl = new ArrayList<>();
     private ServerSocket server;
     public static Server getInstance()
     {
         return ourInstance;
     }
+    public static void create() {
+        if (ourInstance == null) {
+            ourInstance = new Server();
+        }
+    }
+
     private Server() { }
 
     private static class IPAdress {
@@ -77,5 +84,46 @@ public class Server
             System.exit(-1);
         }
         // TODO сделать все что связано с появлением нового игрока.
+    }
+
+    public void sendDouble(double a) {
+        try {
+            for (var item : clientsOutput) {
+                item.writeDouble(a);
+            }
+        } catch (IOException e) {
+            System.out.println("failed to send doubles");
+        }
+    }
+
+    public void sendInt(int a) {
+        try {
+            for (var item : clientsOutput) {
+                item.writeInt(a);
+            }
+        } catch (IOException e) {
+            System.out.println("failed to send doubles");
+        }
+    }
+
+    public void sendVector2(Vector2 a) {
+        try {
+            for (var item : clientsOutput) {
+                item.writeDouble(a.x);
+                item.writeDouble(a.y);
+            }
+        } catch (IOException e) {
+            System.out.println("failed to send doubles");
+        }
+    }
+
+    public void flush() {
+        try {
+            for (var item : clientsOutput) {
+                item.flush();
+            }
+        } catch (IOException e) {
+            System.out.println("failed to send doubles");
+        }
     }
 }
