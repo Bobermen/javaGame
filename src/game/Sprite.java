@@ -28,4 +28,13 @@ public class Sprite extends Component {
     public void destroy() {
         Renderer.sprites.remove(this);
     }
+
+    @Override
+    public Component clone() {
+        Sprite res = new Sprite();
+        res.image = image;
+        res.pivot = pivot.clone();
+        res.alpha = alpha;
+        return res;
+    }
 }

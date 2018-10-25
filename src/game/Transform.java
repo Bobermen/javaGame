@@ -10,7 +10,6 @@ public class Transform extends Component implements Iterable<Transform> {
 
     public Matrix3x3 localToWorldMatrix = new Matrix3x3();
     public Matrix3x3 worldToLocalMatrix = new Matrix3x3();
-
     private Vector2 position = Vector2.ZERO;
     private double rotation = 0;
     private double scale = 1;
@@ -20,8 +19,8 @@ public class Transform extends Component implements Iterable<Transform> {
 
     private Transform parent = null;
     private ArrayList<Transform> children = new ArrayList<>();
-    private Vector2 RIGHT = Vector2.getVector2(1, 0);
-    private Vector2 UP = Vector2.getVector2(0, 1);
+    private Vector2 right = Vector2.getVector2(1, 0);
+    private Vector2 up = Vector2.getVector2(0, 1);
 
     public Vector2 getPosition() {
         return position.clone();
@@ -83,12 +82,12 @@ public class Transform extends Component implements Iterable<Transform> {
         update();
     }
 
-    public Vector2 getUP() {
-        return UP.clone();
+    public Vector2 getUp() {
+        return up.clone();
     }
 
-    public Vector2 getRIGHT() {
-        return RIGHT.clone();
+    public Vector2 getRight() {
+        return right.clone();
     }
 
     // TODO clone()
@@ -114,9 +113,9 @@ public class Transform extends Component implements Iterable<Transform> {
             rotation = localRotation;
             scale = localScale;
         }
-        RIGHT = transformDirection(Vector2.RIGHT);
-        UP = transformDirection(Vector2.UP);
-        //System.out.println(RIGHT);
+        right = transformDirection(Vector2.RIGHT);
+        up = transformDirection(Vector2.UP);
+        //System.out.println(right);
         for (Transform child : transform) {
             child.update();
         }
@@ -126,6 +125,24 @@ public class Transform extends Component implements Iterable<Transform> {
         for (Transform child : transform) {
             child.gameObject.destroy();
         }
+    }
+
+    @Override
+    public Component clone() {
+        Transform res = new Transform();
+        res.parent = parent;
+        res.position = position.clone();
+        res.rotation = rotation;
+        res.scale = scale;
+        res.localPosition = localPosition.clone();
+        res.localRotation = localRotation;
+        res.localScale = localScale;
+        // update();
+        res.localToWorldMatrix = localToWorldMatrix.clone();
+        res.worldToLocalMatrix = worldToLocalMatrix.clone();
+        res.right = right.clone();
+        res.up = up.clone();
+        return res;
     }
 
     public Transform getParent() { return parent; }

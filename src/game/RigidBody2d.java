@@ -70,4 +70,18 @@ public class RigidBody2d extends Component {
         return velocity.add(transform.transformDirection(
                 Matrix3x3.Rotate(90).dot(point).mul(Math.toRadians(angularVelocity))));
     }
+
+    @Override
+    public Component clone() {
+        RigidBody2d res = new RigidBody2d();
+        res.acceleration = acceleration.clone();
+        res.angularAcceleration = angularAcceleration;
+        res.angularVelocity = angularVelocity;
+        res.centerOfMass = centerOfMass.clone();
+        res.worldCenterOfMass = worldCenterOfMass.clone();
+        res.mass = mass;
+        res.previousY = previousY;
+        res.velocity = velocity.clone();
+        return res;
+    }
 }

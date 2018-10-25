@@ -17,9 +17,6 @@ public class GameObject {
         transform.gameObject = this;
     }
 
-    public GameObject clone() {
-        return null;//TODO
-    }
     public void update() {
         components.forEach(Component::update);
         for (Transform child : transform) {
@@ -94,5 +91,21 @@ public class GameObject {
             }
         }
         return null;
+    }
+
+    public GameObject clone() {
+        GameObject res = new GameObject();
+        res.enabled = enabled;
+        res.transform = (Transform)transform.clone();
+        for (int i = 0; i < components.size(); i++) {
+            Component t = components.get(i).clone();
+            t.gameObject = res;
+            t.transform = res.transform;
+            res.components.add(t);
+        }
+        for (Transform child : transform) {
+            child.gameObject.clone().transform.setParent(res.transform);
+        }
+        return res;
     }
 }

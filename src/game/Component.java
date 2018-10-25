@@ -2,7 +2,7 @@ package game;
 
 import Physics2d.Colliders2d.Collider2d;
 
-public class Component {
+abstract public class Component {
 
     public GameObject gameObject; //TODO it's not safety
     public Transform transform; //TODO but what should I do
@@ -33,4 +33,7 @@ public class Component {
     public <T extends Component> T getComponentInChildren(Class<T> cls) {
         return gameObject.getComponentInChildren(cls);
     }
+
+    @Override
+    public abstract Component clone();
 }

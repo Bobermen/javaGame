@@ -51,20 +51,20 @@ public class PlayerControl extends Component {
     }
     private void applyForces() {
         if (rigidBody2d != null) {
-            Vector2 sideVelocity = transform.getUP().mul(rigidBody2d.velocity.dot(transform.getUP()));
-            Vector2 helmNormal = Matrix3x3.Rotate(helm * 15).dot(transform.getUP());
+            Vector2 sideVelocity = transform.getUp().mul(rigidBody2d.velocity.dot(transform.getUp()));
+            Vector2 helmNormal = Matrix3x3.Rotate(helm * 15).dot(transform.getUp());
             Vector2 helmVelocity = helmNormal.mul(rigidBody2d.getRelativePointVelocity(helmPosition).negative()
                     .dot(helmNormal));
             Vector2 pForce = helmVelocity.mul(helmVelocity.magnitude() * 100000);
-            double angularK = pForce.dot(transform.getUP()) / maxAngularVelocity / maxAngularVelocity;
-            pForce = pForce.sub(transform.getUP()
+            double angularK = pForce.dot(transform.getUp()) / maxAngularVelocity / maxAngularVelocity;
+            pForce = pForce.sub(transform.getUp()
                     .mul(angularK * rigidBody2d.angularVelocity * rigidBody2d.angularVelocity));
             System.out.println("pForce = " + transform.inverseTransformDirection(pForce));
             //System.out.println("RelativeVelocity = " + transform.inverseTransformDirection(rigidBody2d.getRelativePointVelocity(helmPosition)));
             rigidBody2d.addForceAtPosition(pForce, worldHelmPosition);
             //System.out.println("HelmVelocity = " + helmVelocity);
             //System.out.println("RelativePointVelocity = " + rigidBody2d.getRelativePointVelocity(Vector2.getVector2(-100, 0)));
-            rigidBody2d.addForce(transform.getRIGHT().mul(power * speed));
+            rigidBody2d.addForce(transform.getRight().mul(power * speed));
             rigidBody2d.addForce(rigidBody2d.velocity.negative().mul(rigidBody2d.velocity.magnitude() * dragK));
             rigidBody2d.addForce(sideVelocity.negative().mul(sideVelocity.magnitude() * lateralResistance));
 
@@ -75,6 +75,10 @@ public class PlayerControl extends Component {
             //System.out.println("AngularVelocity = "  + rigidBody2d.angularVelocity);
             //System.out.println("AngularAcceleration = " + rigidBody2d.angularAcceleration);
         }
+    }
+
+    public Component clone() {
+        return new PlayerControl();
     }
 }
 

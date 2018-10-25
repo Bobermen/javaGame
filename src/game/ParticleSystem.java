@@ -14,10 +14,16 @@ public class ParticleSystem extends Component {
             time = 0;
             GameObject particle = new GameObject();
             particle.addComponent(new Particle()).lifeTime = lifeTime;
-            particle.transform.setLocalPosition(transform.getPosition().sub(transform.getRIGHT().mul(21)));
+            particle.transform.setLocalPosition(transform.getPosition().sub(transform.getRight().mul(21)));
             particle.addComponent(new Sprite(new ImageIcon("Resources/Smoke.png").getImage()));
             particle.transform.setLocalScale(0.02);
             instantiate(particle);
         }
+    }
+
+    public Component clone() {
+        ParticleSystem res = new ParticleSystem();
+        res.time = time;
+        return res;
     }
 }

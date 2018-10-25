@@ -3,6 +3,8 @@ package linAlg;
 import linAlg.Vector2.Vector2;
 import linAlg.Vector3.Vector3;
 
+import java.util.Arrays;
+
 public class Matrix3x3 {
     private double m[];
     public Matrix3x3()
@@ -132,5 +134,11 @@ public class Matrix3x3 {
     public static Matrix3x3 TRS(Vector2 pos, double rotation, double scale)
     {
         return Matrix3x3.Translate(pos).dot(Matrix3x3.Rotate(rotation)).dot(Matrix3x3.Scale(scale));
+    }
+
+    public Matrix3x3 clone() {
+        Matrix3x3 res = new Matrix3x3();
+        res.m = Arrays.copyOf(m, 9);
+        return res;
     }
 }

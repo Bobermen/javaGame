@@ -36,4 +36,8 @@ public class Particle extends Component {
             gameObject.destroy();
         }
     }
+
+    public Component clone() {
+        return new Particle();
+    }
 }
