@@ -19,6 +19,11 @@ public abstract class Polygon extends Collider2d implements Iterable<Pair<Vector
         return new DynamicPolygon();
     }
 
+    protected Polygon setPolygon(Polygon b) {
+        points = (ArrayList<Vector2>) b.points.clone();
+        return this;
+    }
+
     @Override
     public void start() {
         super.start();
