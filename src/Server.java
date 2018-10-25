@@ -1,0 +1,81 @@
+import game.PlayerControl;
+
+import java.io.*;
+import java.net.ServerSocket;
+import java.net.Socket;
+import java.util.ArrayList;
+// import java.util.Scanner;
+
+// класс в котором прописано все взаимодействие с клиентами
+// для его работы на сервере достаточно запустить его как поток
+// и отправлять и получать информацию
+
+public class Server
+{
+    private static Server ourInstance = new Server();
+    private ArrayList<Socket> clients = new ArrayList<>();
+    // DataStream могут быть заменены на что-то более удобное при необходимости
+    // Хотя он невероятно удобен
+    private ArrayList<DataInputStream> clientsInput = new ArrayList<>();
+    private ArrayList<DataOutputStream> clientsOutput = new ArrayList<>();
+    private ArrayList<PlayerControl> clientsControl = new ArrayList<>();
+    private ServerSocket server;
+    public static Server getInstance()
+    {
+        return ourInstance;
+    }
+    private Server() { }
+
+    private static class IPAdress {
+        public byte[] ip = new byte[4];
+        public short port;
+    }
+/*
+    private static IPAdress parceFile(String filename) {
+        IPAdress result = null;
+        try (Scanner in = new Scanner(new FileInputStream("filename"))) {
+            result = new IPAdress();
+            in.useDelimiter("[: ;\n]+");
+            in.skip("[Ss]erver-ip");
+            String[] ip = in.next().split(".");
+            for (int i = 0; i < 4; i++) {
+                result.ip[i] = Byte.parseByte(ip[i]);
+            }
+            in.skip("[Pp]ort");
+            result.port = Short.parseShort(in.next());
+        } catch (FileNotFoundException e) {
+            System.out.println("file not found!");
+            System.out.println(e.getMessage());
+            System.exit(-1);
+        }
+        return result;
+    }
+*/
+    public void run() {
+        Socket client;
+        try {
+            server = new ServerSocket();
+            while (!server.isClosed()) {
+                client = server.accept();
+                onPlayerConnected(client);
+            }
+        } catch (IOException e) {
+            System.out.println("Failed to host server!");
+            System.out.println(e.getMessage());
+            System.exit(-1);
+        }
+    }
+
+    private void onPlayerConnected(Socket client) {
+        clients.add(client);
+        try {
+            clientsInput.add(new DataInputStream(client.getInputStream()));
+            clientsOutput.add(new DataOutputStream(client.getOutputStream()));
+        } catch (IOException e) {
+            System.out.println("Failed to get Streams");
+            System.out.println(e.getMessage());
+            System.exit(-1);
+        }
+        // TODO сделать все что связано с появлением нового игрока.
+    }
+}
