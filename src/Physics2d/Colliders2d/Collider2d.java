@@ -5,8 +5,8 @@ import Physics2d.Physics2d;
 import game.Component;
 import game.RigidBody2d;
 import linAlg.Vector2.Vector2;
-
-// attachedRigitBody у clone выставляется руками.
+// TODO глобальные координаты
+// layer выставляется пуками
 public abstract class Collider2d extends Component
 {
     public int layer;
