@@ -1,6 +1,7 @@
 package game;
 
-import java.awt.Canvas;
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
@@ -46,7 +47,7 @@ public class Input implements KeyListener, MouseListener,
         if(scale < 0) scale = 1;
     }
 
-    public static void addListeners(Canvas c) {
+    public static void addListeners(JFrame c) {
         c.addKeyListener(current);
         c.addMouseMotionListener(current);
         c.addMouseListener(current);

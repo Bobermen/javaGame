@@ -3,17 +3,16 @@ package game;
 import linAlg.Vector2.Vector2;
 
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.image.BufferStrategy;
 import java.util.ArrayList;
 import javax.swing.*;
 
-public class Game extends Canvas implements Runnable {
+public class Game implements Runnable {
 
-    private JFrame frame;
+    public static JFrame frame;
+    public static boolean isServer = false;
+
     private boolean gameRunning = true;
-    private static boolean isServer = false;
     private GameObject mainCamera;
     private BufferStrategy strategy;
     public static ArrayList<GameObject> root = new ArrayList<>();
@@ -21,14 +20,12 @@ public class Game extends Canvas implements Runnable {
 
     public Game(JFrame frame) {
         this.frame = frame;
-        new Input(1).addListeners(this);
-        frame.add(this);
-        frame.setUndecorated(true);
-        frame.setVisible(true);
-        requestFocus();
-        createBufferStrategy(2);
-        strategy = getBufferStrategy();
-        setIgnoreRepaint(true);
+        this.frame.setFocusable(true);
+        new Input(1).addListeners(frame);
+        this.frame.requestFocus();
+        this.frame.createBufferStrategy(2);
+        strategy = frame.getBufferStrategy();
+        this.frame.setIgnoreRepaint(true);
     }
 
     public void start() {
@@ -37,13 +34,13 @@ public class Game extends Canvas implements Runnable {
 
     @Override
     public void run() {
-        createGUI();
+        //createGUI();
         gameLoop();
     }
 
     public void gameLoop() {
-        //frame.remove(frame.getContentPane());
-        //frame.add(this);
+
+        System.out.println("GameLoop");
         firstInstance();
 
         long lastLoopTime = System.nanoTime();
@@ -59,7 +56,7 @@ public class Game extends Canvas implements Runnable {
             Graphics2D g = (Graphics2D) strategy.getDrawGraphics();
             g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
             g.setColor(background);
-            g.fillRect(0,0,frame.getWidth(),frame.getHeight());
+            g.fillRect(0,0, frame.getWidth(), frame.getHeight());
 
 
             //System.out.println("Ship pos = " + ship.transform.position.x + " " + ship.transform.position.y);
@@ -86,9 +83,7 @@ public class Game extends Canvas implements Runnable {
     }
 
     private void render(Graphics2D g) {
-        //System.out.println(Renderer.sprites.size());
         Renderer.sprites.forEach(sprite -> Renderer.draw(sprite, g));
-        //game.Renderer.sprites.clear();
     }
     private void firstInstance() {
 
@@ -104,7 +99,7 @@ public class Game extends Canvas implements Runnable {
         ship.addComponent(new ParticleSystem());
 
         mainCamera = new GameObject();
-        mainCamera.addComponent(new Camera(frame.getWidth(), frame.getHeight()));
+        mainCamera.addComponent(new Camera());
         Game.instantiate(mainCamera);
 
         GameObject hull = new GameObject();
@@ -164,47 +159,7 @@ public class Game extends Canvas implements Runnable {
         return clone;
     }
 
-    public void createGUI() {
-        JPanel panel = new JPanel();
-        panel.setLayout(new FlowLayout());
 
-        JTextField textField = new JTextField();
-        textField.setColumns(23);
-
-        JButton button1 = new JButton("Host");
-        button1.setActionCommand("StartServer");
-
-        JButton button2 = new JButton("Connect");
-        button1.setActionCommand("Connect");
-
-
-        ActionListener actionListener = new MenuActionListener();
-        button1.addActionListener(actionListener);
-
-        panel.add(textField);
-        panel.add(button1);
-        panel.add(button2);
-
-        //frame.pack();
-        //frame.add(panel);
-        //frame.setVisible(true);
-    }
-
-    private class MenuActionListener implements ActionListener {
-        public void actionPerformed(ActionEvent e) {
-
-            if (e.getActionCommand().equals("StartServer")) {
-                System.out.println("Pressed");
-                createServer();
-
-                return;
-            }
-            if (e.getActionCommand().equals("Connect")) {
-                gameLoop();
-                return;
-            }
-        }
-    }
 
     private void createServer() {
         isServer = true;
