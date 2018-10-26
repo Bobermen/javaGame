@@ -13,8 +13,6 @@ public class RigidBody2d extends Component {
     public double angularVelocity = 0;
     public double angularAcceleration = 0;
 
-    private double previousY = Double.POSITIVE_INFINITY;
-
     //private Vector2 resultForce = Vector2.ZERO.clone();
 
     public RigidBody2d() {
@@ -48,20 +46,6 @@ public class RigidBody2d extends Component {
         angularAcceleration += Math.toDegrees(3 * Math.signum(iForce.cross(rVector)) * iForce.magnitude() * rVector.magnitude()
                 / mass / 2 / 10225);
 
-        if (previousY > transform.transformDirection(force).y) {
-            previousY = transform.transformDirection(force).y;
-        }
-        else {
-            //System.out.println("worldCenter = " + worldCenterOfMass);
-            //System.out.println("rVector = " + rVector);
-            //System.out.println("rVectorMag = " + rVector.magnitude());
-            //System.out.println("rForce = " + rForce);
-            //System.out.println("rForceMag = " + rForce.magnitude());
-            //System.out.println("iForce = " + iForce);
-            //System.out.println("iForceMag = " + iForce.magnitude());
-            //System.out.println("AngularVelocity = " + angularVelocity);
-            //System.out.println("AngularAcceleration = " + angularAcceleration);
-        }
     }
     public Vector2 getRelativePointVelocity(Vector2 point) {
         //System.out.println(point);
@@ -80,7 +64,6 @@ public class RigidBody2d extends Component {
         res.centerOfMass = centerOfMass.clone();
         res.worldCenterOfMass = worldCenterOfMass.clone();
         res.mass = mass;
-        res.previousY = previousY;
         res.velocity = velocity.clone();
         return res;
     }
