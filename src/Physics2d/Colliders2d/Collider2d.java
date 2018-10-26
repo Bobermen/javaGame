@@ -6,6 +6,7 @@ import game.Component;
 import game.RigidBody2d;
 import linAlg.Vector2.Vector2;
 
+// attachedRigitBody у clone выставляется руками.
 public abstract class Collider2d extends Component
 {
     public int layer;
@@ -13,14 +14,16 @@ public abstract class Collider2d extends Component
     protected Vector2 center;
 
     @Override
-    public Component clone() {
-        return null;
-    }
-
-    @Override
     public void start() {
         Physics2d.colliders.get(layer).add(this);
         // attachedRigidBody = getComponentInParent(attachedRigidBody.getClass());
+    }
+
+    protected Collider2d colliderSet(Collider2d b) {
+        layer = b.layer;
+        radius = b.radius;
+        center = b.center.clone();
+        return this;
     }
 
     public void destroy() {

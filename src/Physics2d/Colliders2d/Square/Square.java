@@ -27,6 +27,13 @@ public abstract class Square extends Collider2d
         }).sub(center).sqrMagnitude();
     }
 
+    protected Square squareSet(Square b) {
+        colliderSet(b);
+        d1 = b.d1;
+        d2 = b.d2;
+        return this;
+    }
+
     @Override
     public Pair<Vector2, Double> isCollision(Collider2d collider) {
         return collider.isCollision(this);

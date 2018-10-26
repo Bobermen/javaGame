@@ -1,10 +1,16 @@
 package Physics2d.Colliders2d.Square;
 
+import game.Component;
 import game.RigidBody2d;
 
 public class DynamicSquare extends StaticSquare
 {
     private RigidBody2d attachedRigidBody;
+
+    @Override
+    public Component clone() {
+        return Square.getDynamic().squareSet(this);
+    }
 
     @Override
     public void start() {
