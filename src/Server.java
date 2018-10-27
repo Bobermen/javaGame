@@ -1,39 +1,37 @@
-import game.PlayerControl;
 import linAlg.Vector2.Vector2;
 
 import java.io.*;
+import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
-// import java.util.Scanner;
 
 // класс в котором прописано все взаимодействие с клиентами
 // для его работы на сервере достаточно запустить его как поток
 // и отправлять и получать информацию
 
-public class Server
-{
+public class Server implements Runnable {
     private static Server ourInstance = null;
     public ArrayList<Socket> clients = new ArrayList<>();
     // DataStream могут быть заменены на что-то более удобное при необходимости
     // Хотя он невероятно удобен
-    public ArrayList<DataInputStream> clientsInput = new ArrayList<>();
     public ArrayList<DataOutputStream> clientsOutput = new ArrayList<>();
-    public ArrayList<PlayerControl> clientsControl = new ArrayList<>();
     private ServerSocket server;
+    private IPAddress address;
     public static Server getInstance()
     {
         return ourInstance;
     }
-    public static void create() {
+    public static void create(IPAddress address) {
         if (ourInstance == null) {
             ourInstance = new Server();
+            ourInstance.address = address;
         }
     }
 
     private Server() { }
 
-    private static class IPAdress {
+    private static class IPAddress {
         public byte[] ip = new byte[4];
         public short port;
     }
@@ -61,7 +59,7 @@ public class Server
     public void run() {
         Socket client;
         try {
-            server = new ServerSocket();
+            server = new ServerSocket(address.port, 0, InetAddress.getByAddress(address.ip));
             while (!server.isClosed()) {
                 client = server.accept();
                 onPlayerConnected(client);
@@ -76,7 +74,6 @@ public class Server
     private void onPlayerConnected(Socket client) {
         clients.add(client);
         try {
-            clientsInput.add(new DataInputStream(client.getInputStream()));
             clientsOutput.add(new DataOutputStream(client.getOutputStream()));
         } catch (IOException e) {
             System.out.println("Failed to get Streams");
@@ -126,6 +123,4 @@ public class Server
             System.out.println("failed to send doubles");
         }
     }
-
-
 }
