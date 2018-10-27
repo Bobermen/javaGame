@@ -8,6 +8,8 @@ import java.awt.event.ActionListener;
 public class Menu extends JFrame {
 
     public static Game game;
+    public static JPanel panel;
+    public static JPanel panel2;
 
     public Menu() {
         super("Game");
@@ -24,7 +26,7 @@ public class Menu extends JFrame {
     public void createGUI() {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        JPanel panel = (JPanel) getContentPane();
+        panel = new JPanel();
         panel.setLayout(null);
 
         JButton button1 = new JButton("Host");
@@ -52,28 +54,56 @@ public class Menu extends JFrame {
         textField2.setLocation(170,10);
         panel.add(textField2);
 
+        //panel.setSize(400, 400);
+        panel2 = new JPanel();
+        panel2.setLayout(null);
+
+        JButton button3 = new JButton("Start");
+        button3.setActionCommand("Start");
+        button3.setSize(100, 20);
+        button3.setLocation(170, 10);
+        panel2.add(button3);
+
+        JLabel label1 = new JLabel();
+        label1.setText("Player 0");
+        label1.setSize(new Dimension(150, 400));
+        label1.setLocation(10,10);
+        label1.setVerticalAlignment(JLabel.TOP);
+        panel2.add(label1);
+
         ActionListener actionListener = new MenuActionListener();
 
         button1.addActionListener(actionListener);
         button2.addActionListener(actionListener);
-
-        panel.setSize(400, 400);
+        button3.addActionListener(actionListener);
+        //getContentPane().add(panel2);
+        getContentPane().add(panel);
     }
 
     public class MenuActionListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
-            if (e.getActionCommand().equals("Host")) {
-                System.out.println("Host");
+            if (e.getActionCommand().equals("Host") || e.getActionCommand().equals("Connect")) {
+                getContentPane().remove(panel);
+                getContentPane().add(panel2);
+                getContentPane().revalidate();
+                getContentPane().repaint();
+                if (e.getActionCommand().equals("Host")) {
+                    System.out.println("Host");
+                    return;
+                }
+                if (e.getActionCommand().equals("Connect")) {
+                    System.out.println("Connect");
+
+                    return;
+                }
+            }
+            if (e.getActionCommand().equals("Start")) {
+                System.out.println("Start");
                 getContentPane().removeAll();
                 getContentPane().revalidate();
-                //frame.getContentPane().repaint();
+                getContentPane().repaint();
                 Game.isServer = true;
                 game.start();
-                return;
-            }
-            if (e.getActionCommand().equals("Connect")) {
-                System.out.println("Connect");
-                return;
             }
         }
     }
