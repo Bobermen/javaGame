@@ -9,13 +9,13 @@ import javax.swing.*;
 
 public class Game implements Runnable {
 
-    public static JFrame frame;
-    public static boolean isServer = false;
+    public JFrame frame;
+    public static ArrayList<GameObject> root = new ArrayList<>();
+
 
     private boolean gameRunning = true;
     private GameObject mainCamera;
     private BufferStrategy strategy;
-    public static ArrayList<GameObject> root = new ArrayList<>();
     private Color background = new Color(0, 87, 133, 255);
 
     public Game(JFrame frame) {
@@ -27,17 +27,20 @@ public class Game implements Runnable {
         strategy = frame.getBufferStrategy();
         this.frame.setIgnoreRepaint(true);
     }
-
     public void start() {
         new Thread(this).start();
     }
-
     @Override
     public void run() {
         //createGUI();
+        if (NetworkManager.isServer) {
+            createLobby();
+        }
+        else {
+            connectToLobby();
+        }
         gameLoop();
     }
-
     public void gameLoop() {
 
         System.out.println("GameLoop");
@@ -46,7 +49,6 @@ public class Game implements Runnable {
         long lastLoopTime = System.nanoTime();
         final int TARGET_FPS = 60;
         final long OPTIMAL_TIME = 1000000000 / TARGET_FPS;
-
 
         while (gameRunning) {
             long now = System.nanoTime();
@@ -58,7 +60,6 @@ public class Game implements Runnable {
             g.setColor(background);
             g.fillRect(0,0, frame.getWidth(), frame.getHeight());
 
-
             //System.out.println("Ship pos = " + ship.transform.position.x + " " + ship.transform.position.y);
             //System.out.println(game.Camera.main.resolutionHeight);
 
@@ -69,6 +70,7 @@ public class Game implements Runnable {
             g.dispose();
             strategy.show();
             Input.update();
+            NetworkManager.flush();
 
             try {
                 Thread.sleep( (lastLoopTime-System.nanoTime() + OPTIMAL_TIME)/1000000 );
@@ -81,12 +83,10 @@ public class Game implements Runnable {
             root.get(i).update();
         }
     }
-
     private void render(Graphics2D g) {
         Renderer.sprites.forEach(sprite -> Renderer.draw(sprite, g));
     }
     private void firstInstance() {
-
 
         GameObject ship = new GameObject();
         ship.transform.setLocalPosition(Vector2.getVector2(0, 0));
@@ -95,11 +95,12 @@ public class Game implements Runnable {
         RigidBody2d rigidBody2d = ship.addComponent(new RigidBody2d());
         rigidBody2d.mass = 26000000;
         rigidBody2d.velocity = ship.transform.getRight().mul(16);
-        ship.addComponent(new PlayerControl());
+        //ship.addComponent(new PlayerControl());
+        ship.addComponent(new SyncTransform());
         ship.addComponent(new ParticleSystem());
 
         mainCamera = new GameObject();
-        mainCamera.addComponent(new Camera());
+        mainCamera.addComponent(new Camera(frame));
         Game.instantiate(mainCamera);
 
         GameObject hull = new GameObject();
@@ -140,12 +141,30 @@ public class Game implements Runnable {
         top.addComponent(new Sprite(new ImageIcon("Resources/RUF_1.png").getImage()));
         top.transform.setParent(ship.transform);
 
-        Game.instantiate(ship);
-        ship.transform.setLocalRotation(90);
-        rigidBody2d.velocity = ship.transform.getRight().mul(16);
-        Game.instantiate(ship);
-    }
+        Vector2 position = Vector2.ZERO;
+        if (NetworkManager.isServer) {
+            ship.addComponent(new PlayerControl());
+            instantiate(ship).getComponent(PlayerControl.class).isPlayer = true;
+        }
+        else {
+            instantiate(ship);
+        }
 
+        for (int i = 0; i < NetworkManager.playerCount - 1; i++) {
+            position = position.add(Vector2.UP.negative().mul(50));
+            ship.transform.setLocalPosition(position);
+            if (i == NetworkManager.playerID) {
+                System.out.println("Client: Player found");
+                instantiate(ship).addComponent(new PlayerControl()).isPlayer = true;
+            }
+            else {
+                GameObject clone = instantiate(ship);
+                if (NetworkManager.isServer) {
+                    clone.getComponent(PlayerControl.class).playerID = i;
+                }
+            }
+        }
+    }
     public static GameObject instantiate(GameObject origin, Transform parent) {
         GameObject clone = origin.clone();
         clone.transform.setParent(parent);
@@ -158,11 +177,16 @@ public class Game implements Runnable {
         clone.start();
         return clone;
     }
+    private void createLobby() {
+        String ip = ((JTextField) Menu.mainPanel.getComponent(2)).getText();
+        String port = ((JTextField) Menu.mainPanel.getComponent(3)).getText();
 
+        NetworkManager.startLobby(ip, port);
+    }
+    private void connectToLobby() {
+        String ip = ((JTextField) Menu.mainPanel.getComponent(2)).getText();
+        String port = ((JTextField) Menu.mainPanel.getComponent(3)).getText();
 
-
-    private void createServer() {
-        isServer = true;
-        gameLoop();
+        NetworkManager.connectToLobby(ip, port);
     }
 }
