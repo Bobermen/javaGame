@@ -10,6 +10,8 @@ public class PlayerControl extends Component {
     public double maxVelocity = 16;
     public double radius = 720;
     public double turnaroundTime = 180;
+    public boolean isPlayer = false;
+    public int playerID;
 
     private double dragK;
     private double maxAngularVelocity;
@@ -28,8 +30,33 @@ public class PlayerControl extends Component {
 
     public void update() {
         worldHelmPosition = transform.transformPosition(helmPosition);
-        getKeys();
-        applyForces();
+        if (isPlayer) {
+            getKeys();
+            if (!NetworkManager.isServer) {
+                try {
+                    NetworkManager.clientOutput.writeInt(speed);
+                    NetworkManager.clientOutput.writeInt(helm);
+                    NetworkManager.flush();
+                    System.out.println("PlayerControl write successful");
+                } catch (Exception e) {
+                    System.out.println(e.getMessage());
+                }
+            }
+        } else {
+            if (NetworkManager.isServer) {
+                try {
+                    speed = NetworkManager.clientsInput.get(playerID).readInt();
+                    helm = NetworkManager.clientsInput.get(playerID).readInt();
+                    System.out.println("PlayerControl read successful");
+                } catch (Exception e) {
+                    System.out.println(isPlayer);
+                    System.out.println(e.getMessage());
+                }
+            }
+        }
+        if (NetworkManager.isServer) {
+            applyForces();
+        }
     }
     private void getKeys() {
         if (Input.isKeyReleased(KeyEvent.VK_W) && speed < 5) {
