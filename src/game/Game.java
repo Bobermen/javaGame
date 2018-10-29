@@ -23,7 +23,7 @@ public class Game implements Runnable {
         this.frame.setFocusable(true);
         new Input(1).addListeners(frame);
         this.frame.requestFocus();
-        this.frame.createBufferStrategy(2);
+        this.frame.createBufferStrategy(3);
         strategy = frame.getBufferStrategy();
         this.frame.setIgnoreRepaint(true);
     }
