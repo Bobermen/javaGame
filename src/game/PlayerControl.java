@@ -37,7 +37,7 @@ public class PlayerControl extends Component {
                     NetworkManager.clientOutput.writeInt(speed);
                     NetworkManager.clientOutput.writeInt(helm);
                     NetworkManager.flush();
-                    System.out.println("PlayerControl write successful");
+                    //System.out.println("PlayerControl write successful");
                 } catch (Exception e) {
                     System.out.println(e.getMessage());
                 }
@@ -47,7 +47,7 @@ public class PlayerControl extends Component {
                 try {
                     speed = NetworkManager.clientsInput.get(playerID).readInt();
                     helm = NetworkManager.clientsInput.get(playerID).readInt();
-                    System.out.println("PlayerControl read successful");
+                    //System.out.println("PlayerControl read successful");
                 } catch (Exception e) {
                     System.out.println(isPlayer);
                     System.out.println(e.getMessage());

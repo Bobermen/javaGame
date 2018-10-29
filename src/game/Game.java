@@ -50,11 +50,28 @@ public class Game implements Runnable {
         final int TARGET_FPS = 60;
         final long OPTIMAL_TIME = 1000000000 / TARGET_FPS;
 
+        int lastFpsTime = 0;
+        int fps = 0;
+
         while (gameRunning) {
             long now = System.nanoTime();
             long updateLength = now - lastLoopTime;
             lastLoopTime = now;
             Time.detlaTime = (double)updateLength / 1000000000;
+
+            lastFpsTime += updateLength;
+            fps++;
+
+            // update our FPS counter if a second has passed since
+
+            // we last recorded
+
+            if (lastFpsTime >= 1000000000) {
+                frame.setTitle(" (FPS: "+fps+")");
+                lastFpsTime = 0;
+                fps = 0;
+            }
+
             Graphics2D g = (Graphics2D) strategy.getDrawGraphics();
             g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
             g.setColor(background);

@@ -18,7 +18,7 @@ public class SyncTransform extends Component {
             try {
                 transform.setLocalPosition(Vector2.getVector2(in.readDouble(), in.readDouble()));
                 transform.setLocalRotation(in.readDouble());
-                System.out.println("SyncTransform read successful");
+                //System.out.println("SyncTransform read successful");
             } catch (Exception e) {
                 System.out.println(e.getMessage());
             }
