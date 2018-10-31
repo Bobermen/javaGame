@@ -14,7 +14,6 @@ public class SyncTransform extends Component {
             time += Time.detlaTime;
             return;
         }
-        time = 0;
         if (NetworkManager.isServer) {
             NetworkManager.sendVector2(transform.getLocalPosition());
             NetworkManager.sendDouble(transform.getLocalRotation());
@@ -30,6 +29,7 @@ public class SyncTransform extends Component {
                 System.out.println(e.getMessage());
             }
         }
+        time = 0;
     }
 
     @Override

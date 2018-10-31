@@ -35,7 +35,6 @@ public class PlayerControl extends Component {
             time += Time.detlaTime;
             return;
         }
-        time = 0;
         worldHelmPosition = transform.transformPosition(helmPosition);
         if (isPlayer) {
             getKeys();
@@ -64,6 +63,7 @@ public class PlayerControl extends Component {
         if (NetworkManager.isServer) {
             applyForces();
         }
+        time = 0;
     }
     private void getKeys() {
         if (Input.isKeyReleased(KeyEvent.VK_W) && speed < 5) {
