@@ -111,7 +111,7 @@ public class Game implements Runnable {
         ship.transform.setLocalScale(0.06);
         RigidBody2d rigidBody2d = ship.addComponent(new RigidBody2d());
         rigidBody2d.mass = 26000000;
-        rigidBody2d.velocity = ship.transform.getRight().mul(16);
+        //rigidBody2d.velocity = ship.transform.getRight().mul(16);
         //ship.addComponent(new PlayerControl());
         ship.addComponent(new SyncTransform());
         ship.addComponent(new ParticleSystem());
