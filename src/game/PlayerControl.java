@@ -22,6 +22,8 @@ public class PlayerControl extends Component {
     private Vector2 helmPosition = Vector2.getVector2(-100, 0);
     private Vector2 worldHelmPosition;
 
+    double time = 0;
+
     public void start() {
         dragK = power*5/maxVelocity/maxVelocity;
         maxAngularVelocity = 360 / turnaroundTime;
@@ -29,6 +31,11 @@ public class PlayerControl extends Component {
     }
 
     public void update() {
+        if (time < 0.1) {
+            time += Time.detlaTime;
+            return;
+        }
+        time = 0;
         worldHelmPosition = transform.transformPosition(helmPosition);
         if (isPlayer) {
             getKeys();
@@ -36,7 +43,7 @@ public class PlayerControl extends Component {
                 try {
                     NetworkManager.clientOutput.writeInt(speed);
                     NetworkManager.clientOutput.writeInt(helm);
-                    NetworkManager.flush();
+                    //NetworkManager.flush();
                     //System.out.println("PlayerControl write successful");
                 } catch (Exception e) {
                     System.out.println(e.getMessage());

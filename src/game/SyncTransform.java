@@ -6,12 +6,19 @@ import java.io.DataInputStream;
 
 public class SyncTransform extends Component {
 
+    double time = 0;
+
     @Override
     public void update() {
+        if (time < 0.1) {
+            time += Time.detlaTime;
+            return;
+        }
+        time = 0;
         if (NetworkManager.isServer) {
             NetworkManager.sendVector2(transform.getLocalPosition());
             NetworkManager.sendDouble(transform.getLocalRotation());
-            NetworkManager.flush();
+            //NetworkManager.flush();
         }
         else {
             DataInputStream in = NetworkManager.clientInput;
