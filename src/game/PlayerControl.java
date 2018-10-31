@@ -35,6 +35,7 @@ public class PlayerControl extends Component {
             time += Time.detlaTime;
             return;
         }
+
         worldHelmPosition = transform.transformPosition(helmPosition);
         if (isPlayer) {
             getKeys();
@@ -50,6 +51,13 @@ public class PlayerControl extends Component {
             }
         } else {
             if (NetworkManager.isServer) {
+                try {
+                    if (NetworkManager.clientsInput.get(playerID).available() == 0) {
+                        return;
+                    }
+                } catch (Exception e) {
+                    System.out.println(e.getMessage());
+                }
                 try {
                     speed = NetworkManager.clientsInput.get(playerID).readInt();
                     helm = NetworkManager.clientsInput.get(playerID).readInt();

@@ -22,6 +22,13 @@ public class SyncTransform extends Component {
         else {
             DataInputStream in = NetworkManager.clientInput;
             try {
+                if (NetworkManager.clientInput.available() == 0) {
+                    return;
+                }
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
+            try {
                 transform.setLocalPosition(Vector2.getVector2(in.readDouble(), in.readDouble()));
                 transform.setLocalRotation(in.readDouble());
                 //System.out.println("SyncTransform read successful");

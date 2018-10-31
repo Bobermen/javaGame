@@ -80,6 +80,7 @@ public class Game implements Runnable {
             //System.out.println("Ship pos = " + ship.transform.position.x + " " + ship.transform.position.y);
             //System.out.println(game.Camera.main.resolutionHeight);
 
+
             update();
 
             render(g);
