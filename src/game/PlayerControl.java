@@ -31,10 +31,10 @@ public class PlayerControl extends Component {
     }
 
     public void update() {
-        if (time < 0.1) {
-            time += Time.detlaTime;
-            return;
-        }
+//        if (time < 0.1) {
+//            time += Time.detlaTime;
+//            return;
+//        }
 
         worldHelmPosition = transform.transformPosition(helmPosition);
         if (isPlayer) {
