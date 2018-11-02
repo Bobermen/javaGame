@@ -236,9 +236,9 @@ public class NetworkManager {
             UDPSocket.send(ByteBuffer.wrap(toServerPacket.toByteArray()), socket.getRemoteSocketAddress());
             toServerPacket.reset();
             toClientPacket.clear();
-            SocketAddress sender = UDPSocket.receive(toServerPackets.get(i));
+            SocketAddress sender = UDPSocket.receive(toClientPacket);
             while (sender != null) {
-                sender = UDPSocket.receive(toServerPackets.get(i));
+                sender = UDPSocket.receive(toClientPacket);
             }
             clientInput.reset();
         } catch (IOException e) {
