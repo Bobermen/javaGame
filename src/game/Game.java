@@ -88,7 +88,7 @@ public class Game implements Runnable {
             g.dispose();
             strategy.show();
             Input.update();
-            NetworkManager.flush();
+            NetworkManager.update();
 
             try {
                 Thread.sleep( (lastLoopTime-System.nanoTime() + OPTIMAL_TIME)/1000000 );
