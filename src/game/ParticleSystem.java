@@ -1,6 +1,7 @@
 package game;
 
 import javax.swing.*;
+import java.awt.*;
 
 public class ParticleSystem extends Component {
 
@@ -8,12 +9,13 @@ public class ParticleSystem extends Component {
     public double time;
     public double delay = 0.2;
     GameObject particle;
+    private static final Image smoke = new ImageIcon("Resources/Smoke.png").getImage();
 
     @Override
     public void start() {
         particle = new GameObject();
         particle.addComponent(new Particle()).lifeTime = lifeTime;
-        particle.addComponent(new Sprite(new ImageIcon("Resources/Smoke.png").getImage()));
+        particle.addComponent(new Sprite(smoke));
         particle.transform.setLocalScale(0.02);
     }
     @Override
