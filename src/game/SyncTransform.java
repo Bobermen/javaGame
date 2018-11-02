@@ -10,10 +10,10 @@ public class SyncTransform extends Component {
 
     @Override
     public void update() {
-        if (time < 0.1) {
-            time += Time.detlaTime;
-            return;
-        }
+//        if (time < 0.1) {
+//            time += Time.detlaTime;
+//            return;
+//        }
         if (NetworkManager.isServer) {
             NetworkManager.sendVector2(transform.getLocalPosition());
             NetworkManager.sendDouble(transform.getLocalRotation());
