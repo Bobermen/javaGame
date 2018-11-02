@@ -4,13 +4,11 @@ import Physics2d.Colliders2d.Collider2d;
 import Physics2d.Colliders2d.Pair;
 import linAlg.Vector2.Vector2;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Iterator;
+import java.util.*;
 
 public abstract class Polygon extends Collider2d implements Iterable<Pair<Vector2, Vector2>> {
-    public ArrayList<Vector2> points = new ArrayList<>();
-
+    private ArrayList<Vector2> globalPoints = new ArrayList<>();
+    private ArrayList<Vector2> points = new ArrayList<>();
     public static StaticPolygon getStatic() {
         return new StaticPolygon();
     }
@@ -20,21 +18,25 @@ public abstract class Polygon extends Collider2d implements Iterable<Pair<Vector
     }
 
     protected Polygon setPolygon(Polygon b) {
-        points = (ArrayList<Vector2>) b.points.clone();
+        colliderSet(b);
+        points.clear();
+        points.addAll(b.points);
         return this;
+    }
+
+    @Override
+    public void update() {
+        globalPoints.clear();
+        points.stream().map(transform::transformPosition).forEach(globalPoints::add);
     }
 
     @Override
     public void start() {
         super.start();
         center = points.stream().reduce(Vector2.ZERO.clone(), Vector2::iadd).idiv(points.size());
-        radius = Collections.max(points, (item1, item2) -> {
-            if (item1.sub(center).sqrMagnitude() < item2.sub(center).sqrMagnitude())
-                return -1;
-            else
-                return 1;
-        }).sub(center).sqrMagnitude();
+        radius = Collections.max(points, Comparator.comparing(item -> item.sub(center).sqrMagnitude())).sub(center).sqrMagnitude();
     }
+
 
     public void addPoint(Vector2 point) {
         points.add(point);
@@ -78,7 +80,7 @@ public abstract class Polygon extends Collider2d implements Iterable<Pair<Vector
         private Iterator<Vector2> iterator;
         private Vector2 prev;
         private PolygonIterator() {
-            iterator = points.iterator();
+            iterator = globalPoints.iterator();
             prev = iterator.next();
         }
 
@@ -98,4 +100,5 @@ public abstract class Polygon extends Collider2d implements Iterable<Pair<Vector
     public Iterator<Pair<Vector2, Vector2>> iterator() {
         return new PolygonIterator();
     }
+
 }

@@ -29,12 +29,12 @@ public abstract class Circle extends Collider2d {
 
     public Pair<Vector2, Double> isIntersecting(Vector2 p1, Vector2 p2) {
         double sqrR = radius * radius;
-        if ((p1.sub(center).sqrMagnitude() > sqrR) && (p2.sub(center).sqrMagnitude() > sqrR))
+        if ((p1.sub(GlobalCenter).sqrMagnitude() > sqrR) && (p2.sub(GlobalCenter).sqrMagnitude() > sqrR))
             return null;
         // here comes the optimisation, so it can be unreadable
-        Vector2 p1SubC = p1.sub(center);
+        Vector2 p1SubC = p1.sub(GlobalCenter);
         Vector2 p2Subp1 = p2.sub(p1);
-        if ((p1SubC.magnitude() > radius + p2Subp1.magnitude()) || (center.sub(p2).magnitude() > radius + p2Subp1.magnitude()))
+        if ((p1SubC.magnitude() > radius + p2Subp1.magnitude()) || (GlobalCenter.sub(p2).magnitude() > radius + p2Subp1.magnitude()))
             return null;
         double a = p2Subp1.sqrMagnitude();
         double b = p1SubC.dot(p2Subp1);
@@ -55,12 +55,12 @@ public abstract class Circle extends Collider2d {
             res = p2Subp1.mul(x2).iadd(p1);
         if (res == null)
             return null;
-        return Pair.makePair(res, getAngle(center.sub(res), p2Subp1));
+        return Pair.makePair(res, getAngle(GlobalCenter.sub(res), p2Subp1));
     }
 
     @Override
     public boolean isIn(Vector2 point) {
-        return center.sub(point).sqrMagnitude() < radius * radius;
+        return GlobalCenter.sub(point).sqrMagnitude() < radius * radius;
     }
 
     public static StaticCircle getStatic() {
@@ -72,17 +72,17 @@ public abstract class Circle extends Collider2d {
     }
 
     private Pair<Vector2, Double> isCollisionCircle(Circle a) {
-        if (center.sub(a.center).sqrMagnitude() < radius * radius + a.radius * a.radius + 2 * radius * a.radius)
-            return Pair.makePair(a.center.sub(center).idiv(2).iadd(center), (double)0);
+        if (GlobalCenter.sub(a.GlobalCenter).sqrMagnitude() < radius * radius + a.radius * a.radius + 2 * radius * a.radius)
+            return Pair.makePair(a.GlobalCenter.sub(GlobalCenter).idiv(2).iadd(GlobalCenter), (double)0);
         return null;
     }
 
     private Pair<Vector2, Double> isCollisionSquare(Square a) {
         List<Vector2> points = a.getPoints();
-        if (points.stream().anyMatch(point -> point.sub(center).sqrMagnitude() > radius * radius))
+        if (points.stream().anyMatch(point -> point.sub(GlobalCenter).sqrMagnitude() > radius * radius))
             return null;
         Vector2 min = Collections.min(points,
-                (p1, p2) -> (int)(p1.sub(center).sqrMagnitude() - p2.sub(center).sqrMagnitude()));
+                (p1, p2) -> (int)(p1.sub(GlobalCenter).sqrMagnitude() - p2.sub(GlobalCenter).sqrMagnitude()));
         int index = points.indexOf(min);
         Pair<Vector2, Double> res;
         if (index == 0) {

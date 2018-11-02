@@ -11,12 +11,12 @@ public abstract class Collider2d extends Component
 {
     public int layer;
     protected double radius;
+    protected Vector2 GlobalCenter;
     protected Vector2 center;
 
     @Override
     public void start() {
         Physics2d.colliders.get(layer).add(this);
-        // attachedRigidBody = getComponentInParent(attachedRigidBody.getClass());
     }
 
     protected Collider2d colliderSet(Collider2d b) {
@@ -24,6 +24,11 @@ public abstract class Collider2d extends Component
         radius = b.radius;
         center = b.center.clone();
         return this;
+    }
+
+    @Override
+    public void update() {
+        GlobalCenter = transform.transformPosition(center);
     }
 
     public void destroy() {
@@ -37,16 +42,16 @@ public abstract class Collider2d extends Component
     public abstract boolean isIn(Vector2 point);
 
     protected boolean canNotIntersect(Vector2 p1, Vector2 p2) {
-        if ((p1.sub(center).sqrMagnitude() > radius * radius) && (p2.sub(center).sqrMagnitude() > radius * radius))
+        if ((p1.sub(GlobalCenter).sqrMagnitude() > radius * radius) && (p2.sub(GlobalCenter).sqrMagnitude() > radius * radius))
             return true;
         double distance = p1.sub(p2).magnitude() + radius;
-        return center.sub(p1).sqrMagnitude() > distance * distance ||
-                center.sub(p2).sqrMagnitude() > distance * distance;
+        return GlobalCenter.sub(p1).sqrMagnitude() > distance * distance ||
+                GlobalCenter.sub(p2).sqrMagnitude() > distance * distance;
     }
 
     protected boolean canNotIntersect(Collider2d collider) {
         double magn = radius + collider.radius;
-        return (collider.center.sub(center).sqrMagnitude() > magn * magn);
+        return (collider.GlobalCenter.sub(GlobalCenter).sqrMagnitude() > magn * magn);
     }
 
     public static Pair<Vector2, Double> isIntersecting(Vector2 a, Vector2 b, Vector2 c, Vector2 d) {

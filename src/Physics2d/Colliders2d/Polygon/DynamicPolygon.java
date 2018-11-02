@@ -8,9 +8,7 @@ public class DynamicPolygon extends StaticPolygon
     private RigidBody2d attachedRigidBody;
 
     @Override
-    public Component clone() {
-        return Polygon.getDynamic().setPolygon(this);
-    }
+    public Component clone() { return Polygon.getDynamic().setPolygon(this); }
 
 
     @Override
