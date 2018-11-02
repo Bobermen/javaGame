@@ -221,6 +221,7 @@ public class NetworkManager {
             for (int i = 0; i < clients.size(); i++) {
                 toServerPackets.get(i).clear();
                 UDPSockets.get(i).receive(toServerPackets.get(i));
+                clientsInput.get(i).reset();
             }
         } catch (IOException e) {
             System.out.println(e.getMessage());
@@ -232,7 +233,8 @@ public class NetworkManager {
             UDPSocket.send(ByteBuffer.wrap(toServerPacket.toByteArray()), socket.getRemoteSocketAddress());
             toServerPacket.reset();
             toClientPacket.clear();
-            UDPSocket.receive(toClientPacket);
+            SocketAddress addr = UDPSocket.receive(toClientPacket);
+            clientInput.reset();
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }
@@ -240,8 +242,9 @@ public class NetworkManager {
 
     private static void clientStartGame() {
         try {
-            socket.close();
+            //socket.close();
             UDPSocket = DatagramChannel.open();
+            UDPSocket.configureBlocking(false);
             UDPSocket.bind(new InetSocketAddress(socket.getLocalAddress(), socket.getLocalPort()));
             UDPSocket.connect(new InetSocketAddress(socket.getInetAddress(), socket.getPort()));
             toServerPacket = new ByteArrayOutputStream();
@@ -266,6 +269,7 @@ public class NetworkManager {
             for (int i = 0; i < clients.size(); i++) {
                 clients.get(i).close();
                 curChannel = DatagramChannel.open();
+                curChannel.configureBlocking(false);
                 curChannel.bind(new InetSocketAddress(serverSocket.getInetAddress(), serverSocket.getLocalPort()));
                 curChannel.connect(clients.get(i).getRemoteSocketAddress());
                 UDPSockets.add(curChannel);
