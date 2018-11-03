@@ -34,7 +34,7 @@ public abstract class Polygon extends Collider2d implements Iterable<Pair<Vector
     public void start() {
         super.start();
         center = points.stream().reduce(Vector2.ZERO.clone(), Vector2::iadd).idiv(points.size());
-        radius = Collections.max(points, Comparator.comparing(item -> item.sub(center).sqrMagnitude())).sub(center).sqrMagnitude();
+        radius = Collections.max(points, Comparator.comparing(item -> item.sub(center).sqrMagnitude())).sub(center).magnitude();
     }
 
 

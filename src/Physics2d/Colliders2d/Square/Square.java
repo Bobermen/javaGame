@@ -18,7 +18,7 @@ public abstract class Square extends Collider2d
         super.start();
         List<Vector2> points = getPoints();
         center = points.stream().reduce(Vector2.ZERO.clone(), Vector2::iadd).idiv(points.size());
-        radius = Collections.max(points, Comparator.comparing(item -> item.sub(center).sqrMagnitude())).sub(center).sqrMagnitude();
+        radius = Collections.max(points, Comparator.comparing(item -> item.sub(center).sqrMagnitude())).sub(center).magnitude();
     }
 
     protected Square squareSet(Square b) {

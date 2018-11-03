@@ -14,4 +14,9 @@ public class RayCastHit {
         this.collider = collider;
         this.angle = angle;
     }
+
+    @Override
+    public String toString() {
+        return "hitPoint: " + hitPoint + " angle: " + angle;
+    }
 }
