@@ -3,6 +3,7 @@ package Physics2d.Colliders2d;
 
 import Physics2d.Physics2d;
 import game.Component;
+import game.Pair;
 import game.RigidBody2d;
 import linAlg.Vector2.Vector2;
 // TODO глобальные координаты

@@ -1,7 +1,7 @@
 package Physics2d.Colliders2d.Square;
 
 import Physics2d.Colliders2d.Collider2d;
-import Physics2d.Colliders2d.Pair;
+import game.Pair;
 import linAlg.Vector2.Vector2;
 
 import java.util.*;

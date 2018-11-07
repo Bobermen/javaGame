@@ -1,7 +1,7 @@
 package Physics2d.Colliders2d.Circle;
 
 import Physics2d.Colliders2d.Collider2d;
-import Physics2d.Colliders2d.Pair;
+import game.Pair;
 import Physics2d.Colliders2d.Square.Square;
 import linAlg.Vector2.Vector2;
 
