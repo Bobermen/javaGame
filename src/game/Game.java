@@ -159,10 +159,15 @@ public class Game implements Runnable {
         top.addComponent(new Sprite(new ImageIcon("Resources/RUF_1.png").getImage()));
         top.transform.setParent(ship.transform);
 
+        GameObject clone;
         Vector2 position = Vector2.ZERO;
         if (NetworkManager.isServer) {
             ship.addComponent(new PlayerControl());
-            instantiate(ship).getComponent(PlayerControl.class).isPlayer = true;
+            //instantiate(ship).<PlayerControl>getComponent(PlayerControl.class).isPlayer = true;
+            clone = ship.clone();
+            root.add(clone);
+            clone.<PlayerControl>getComponent(PlayerControl.class).isPlayer = true;
+            clone.start();
         }
         else {
             instantiate(ship);
@@ -173,13 +178,20 @@ public class Game implements Runnable {
             ship.transform.setLocalPosition(position);
             if (i == NetworkManager.playerID) {
                 System.out.println("Client: Player found");
-                instantiate(ship).addComponent(new PlayerControl()).isPlayer = true;
+                //instantiate(ship).addComponent(new PlayerControl()).isPlayer = true;
+                clone = ship.clone();
+                root.add(clone);
+                clone.addComponent(new PlayerControl()).isPlayer = true;
+                clone.start();
             }
             else {
-                GameObject clone = instantiate(ship);
+                //clone = instantiate(ship);
+                clone = ship.clone();
+                root.add(clone);
                 if (NetworkManager.isServer) {
-                    clone.getComponent(PlayerControl.class).playerID = i;
+                    clone.<PlayerControl>getComponent(PlayerControl.class).playerID = i;
                 }
+                clone.start();
             }
         }
     }
@@ -189,12 +201,14 @@ public class Game implements Runnable {
         clone.start();
         return clone;
     }
+
     public static GameObject instantiate(GameObject origin) {
         GameObject clone = origin.clone();
         Game.root.add(clone);
         clone.start();
         return clone;
     }
+
     private void createLobby() {
         String ip = ((JTextField) Menu.mainPanel.getComponent(2)).getText();
         String port = ((JTextField) Menu.mainPanel.getComponent(3)).getText();
