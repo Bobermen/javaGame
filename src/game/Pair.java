@@ -1,4 +1,4 @@
-package Physics2d.Colliders2d;
+package game;
 
 public class Pair <T1, T2>{
     public T1 first;
@@ -15,5 +15,10 @@ public class Pair <T1, T2>{
     @Override
     public String toString() {
         return first.toString() + " " + second.toString();
+    }
+
+    @Override
+    public int hashCode() {
+        return first.hashCode() + second.hashCode();
     }
 }
