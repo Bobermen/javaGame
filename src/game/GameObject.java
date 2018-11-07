@@ -44,7 +44,7 @@ public class GameObject {
         return component;
     }
 
-    public <T extends Component> T getComponent(Class<T> cls) {
+    public <T extends Component> T getComponent(Class<?> cls) {
         for (Component component : components)
         {
             if (component.getClass().equals(cls)) {
@@ -53,7 +53,7 @@ public class GameObject {
         }
         return null;
     }
-    public <T extends Component> T getComponentInParent(Class<T> cls) {
+    public <T extends Component> T getComponentInParent(Class<?> cls) {
         Component component;
         if ((component = getComponent(cls)) != null) {
             return (T) component;
@@ -63,7 +63,7 @@ public class GameObject {
         }
         return null;
     }
-    public <T extends Component> T getComponentInChildren(Class<T> cls) {
+    public <T extends Component> T getComponentInChildren(Class<?> cls) {
         Component component;
         if ((component = getComponent(cls)) != null) {
             return (T) component;

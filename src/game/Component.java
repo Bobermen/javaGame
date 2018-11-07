@@ -17,13 +17,13 @@ abstract public class Component {
     public void onCollisionDetected(Collider2d collider) {
 
     }
-    public <T extends Component> T getComponent(Class<T> cls) {
+    public <T extends Component> T getComponent(Class<?> cls) {
         return gameObject.getComponent(cls);
     }
-    public <T extends Component> T getComponentInParent(Class<T> cls) {
+    public <T extends Component> T getComponentInParent(Class<?> cls) {
         return gameObject.getComponentInParent(cls);
     }
-    public <T extends Component> T getComponentInChildren(Class<T> cls) {
+    public <T extends Component> T getComponentInChildren(Class<?> cls) {
         return gameObject.getComponentInChildren(cls);
     }
 
