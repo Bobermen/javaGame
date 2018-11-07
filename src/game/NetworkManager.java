@@ -151,6 +151,16 @@ public class NetworkManager {
         }
     }
 
+    public static void sendBytes(byte[] bytes, int offset, int length) {
+        try {
+            for (var item : clientsOutput) {
+                item.write(bytes, offset, length);
+            }
+        } catch (IOException e) {
+            System.out.println("failed to send doubles");
+        }
+    }
+
     public static void sendDouble(double a) {
         try {
             for (var item : clientsOutput) {
