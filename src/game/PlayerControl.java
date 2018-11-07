@@ -31,66 +31,66 @@ public class PlayerControl extends Component {
     }
 
     public void update() {
-//        if (time < 0.1) {
-//            time += Time.detlaTime;
-//            return;
-//        }
-
         worldHelmPosition = transform.transformPosition(helmPosition);
-        if (isPlayer) {
+        if (isPlayer)
             getKeys();
-            if (!NetworkManager.isServer) {
-                try {
-                    NetworkManager.clientOutput.writeInt(speed);
-                    NetworkManager.clientOutput.writeInt(helm);
-                    //NetworkManager.flush();
-                    //System.out.println("PlayerControl write successful");
-                } catch (Exception e) {
-                    System.out.println(e.getMessage());
-                }
-            }
-        } else {
-            if (NetworkManager.isServer) {
-                try {
-                    if (NetworkManager.clientsInput.get(playerID).available() == 0) {
-                        return;
-                    }
-                } catch (Exception e) {
-                    System.out.println(e.getMessage());
-                }
-                try {
-                    speed = NetworkManager.clientsInput.get(playerID).readInt();
-                    helm = NetworkManager.clientsInput.get(playerID).readInt();
-                    //System.out.println("PlayerControl read successful");
-                } catch (Exception e) {
-                    System.out.println(isPlayer);
-                    System.out.println(e.getMessage());
-                }
-            }
-        }
         if (NetworkManager.isServer) {
             applyForces();
         }
-        time = 0;
     }
+
     private void getKeys() {
-        if (Input.isKeyReleased(KeyEvent.VK_W) && speed < 5) {
-            speed ++;
+        SyncTransform syncTransform = this.getComponent(SyncTransform.class);
+        if (Input.isKeyReleased(KeyEvent.VK_W)) {
+            incSpeed();
+            if (!NetworkManager.isServer) {
+                syncTransform.sendFunction("incSpeed");
+            }
             System.out.println("Speed = " + speed);
         }
-        if (Input.isKeyReleased(KeyEvent.VK_S) && speed > -3) {
-            speed --;
+        if (Input.isKeyReleased(KeyEvent.VK_S)) {
+            decSpeed();
+            if (!NetworkManager.isServer) {
+                syncTransform.sendFunction("decSpeed");
+            }
             System.out.println("Speed = " + speed);
         }
-        if (Input.isKeyReleased(KeyEvent.VK_A) && helm > -2) {
-            helm --;
+        if (Input.isKeyReleased(KeyEvent.VK_D)) {
+            incHelm();
+            if (!NetworkManager.isServer) {
+                syncTransform.sendFunction("incHelm");
+            }
             System.out.println("Helm = " + helm);
         }
-        if (Input.isKeyReleased(KeyEvent.VK_D) && helm < 2) {
-            helm ++;
+        if (Input.isKeyReleased(KeyEvent.VK_A)) {
+            decHelm();
+            if (!NetworkManager.isServer) {
+                syncTransform.sendFunction("decHelm");
+            }
             System.out.println("Helm = " + helm);
         }
     }
+
+    public void incSpeed() {
+        if (speed < 5)
+            ++speed;
+    }
+
+    public void decSpeed() {
+        if (speed > -3)
+            --speed;
+    }
+
+    public void incHelm() {
+        if (helm < 2)
+            ++helm;
+    }
+
+    public void decHelm() {
+        if (helm > -2)
+            --helm;
+    }
+
     private void applyForces() {
         if (rigidBody2d != null) {
             Vector2 sideVelocity = transform.getUp().mul(rigidBody2d.velocity.dot(transform.getUp()));
