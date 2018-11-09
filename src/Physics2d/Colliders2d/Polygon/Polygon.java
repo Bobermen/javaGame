@@ -33,13 +33,30 @@ public abstract class Polygon extends Collider2d implements Iterable<Pair<Vector
     @Override
     public void start() {
         super.start();
+        initCenter();
+        initRadius();
+    }
+
+    private void initCenter() {
         center = points.stream().reduce(Vector2.ZERO.clone(), Vector2::iadd).idiv(points.size());
+    }
+
+    private void initRadius() {
         radius = Collections.max(points, Comparator.comparing(item -> item.sub(center).sqrMagnitude())).sub(center).magnitude();
     }
 
-
-    public void addPoint(Vector2 point) {
+    public Polygon addPoint(Vector2 point) {
         points.add(point);
+        initCenter();
+        initRadius();
+        return this;
+    }
+
+    public Polygon addPoints(Iterable<Vector2> points) {
+        points.forEach(this.points::add);
+        initCenter();
+        initRadius();
+        return this;
     }
 
     @Override
