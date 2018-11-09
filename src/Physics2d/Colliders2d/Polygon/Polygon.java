@@ -70,6 +70,8 @@ public abstract class Polygon extends Collider2d implements Iterable<Pair<Vector
 
     @Override
     public boolean isIn(Vector2 point) {
+        if (!points.get(0).equals(points.get(points.size() - 1)))
+            return false;
         for (var pair : this)
             if (pair.second.sub(pair.first).cross(point.sub(pair.first)) > 0)
                 return false;
