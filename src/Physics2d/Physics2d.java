@@ -23,7 +23,18 @@ public class Physics2d {
         addCollider(collider, 0);
     }
 
+    public static Collider2d getCollider(Vector2 point) {
+        return getCollider(point, new LayerMask());
+    }
 
+    public static Collider2d getCollider(Vector2 point, LayerMask layerMask) {
+        for (int layer : layerMask)
+            for (Collider2d collider : colliders.get(layer)) {
+                if (collider.isIn(point))
+                    return collider;
+            }
+        return null;
+    }
 
     public static RayCastHit rayCast(Vector2 position, Vector2 ray) {
         return rayCast(position, ray, new LayerMask());
