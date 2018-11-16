@@ -134,7 +134,7 @@ public class Transform extends Component implements Iterable<Transform> {
     }
 
     @Override
-    public Component clone() {
+    public Transform clone() {
         Transform res = new Transform();
         res.parent = parent;
         res.position = position.clone();
