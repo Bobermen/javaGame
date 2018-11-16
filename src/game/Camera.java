@@ -4,7 +4,6 @@ import linAlg.Vector2.Vector2;
 
 import javax.swing.*;
 import java.awt.event.KeyEvent;
-import java.security.Key;
 
 public class Camera extends Component {
 
@@ -58,6 +57,15 @@ public class Camera extends Component {
             transform.setLocalPosition(transform.getLocalPosition()
                     .add(Vector2.getVector2(-cameraSpeed*width*Time.detlaTime, 0)));
         }
+    }
+
+    public Vector2 screenToWorld(Vector2 pos) {
+        Vector2 result = Vector2.getVector2(pos.x - resolutionWidth/2, -pos.y + resolutionHeight/2);
+        return transform.getPosition().add(result.mul(width/resolutionWidth));
+    }
+    //TODO
+    public Vector2 worldToscreen(Vector2 pos) {
+        return pos;
     }
 
     @Override
