@@ -64,7 +64,7 @@ public class Camera extends Component {
         return transform.getPosition().add(result.mul(width/resolutionWidth));
     }
     //TODO
-    public Vector2 worldToscreen(Vector2 pos) {
+    public Vector2 worldToScreen(Vector2 pos) {
         return pos;
     }
 
